@@ -1,0 +1,64 @@
+version: '3.8'
+services:
+  eureka_service:
+    build: ./Eureka
+    image: wiem23/eureka:latest
+    container_name: discovery-service
+    hostname: eureka_service
+    ports:
+      - "9000:9000"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+    networks:
+      - eventsphere-net
+
+  resource-management-service:
+    build: ./resource-management
+    image: wiem23/event-resource-management:latest
+    ports:
+      - "8087:8087"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ressource-event-management
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - SERVER_PORT=8087
+    depends_on:
+      - eureka_service
+      - postgres
+    networks:
+      - eventsphere-net
+
+  gateway-service:
+    build: ./Gateway
+    image: wiem23/gateway-service:latest
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - SERVER_PORT=8082
+    depends_on:
+      - eureka_service
+    networks:
+      - eventsphere-net
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=ressource-event-management
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - eventsphere-net
+
+networks:
+  eventsphere-net:
+    driver: bridge
+
+volumes:
+  postgres-data:
