@@ -17,6 +17,7 @@ services:
     image: wiem23/event-resource-management:latest
     ports:
       - "8087:8087"
+    hostname: ressource-event-management
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ressource-event-management
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -34,6 +35,7 @@ services:
     image: wiem23/gateway-service:latest
     ports:
       - "8082:8082"
+    hostname: gateway-service
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
       - SERVER_PORT=8082
