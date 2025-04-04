@@ -14,5 +14,4 @@ public interface IResourceBookingService {
     public RessourceBooking createBooking(UUID resourceId, LocalDateTime startTime, LocalDateTime endTime, String bookedBy);
     public List<RessourceBooking> getBookingsByResourceId(UUID resourceId);
     public void cancelBooking(UUID bookingId);
-    public  List<ResourceUtilizationReport> getResourceUtilizationReport(LocalDateTime startDate, LocalDateTime endDate);
 }

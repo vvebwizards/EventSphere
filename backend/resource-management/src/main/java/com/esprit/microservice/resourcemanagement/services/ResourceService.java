@@ -1,12 +1,19 @@
 package com.esprit.microservice.resourcemanagement.services;
 
+import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
+import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
+import com.esprit.microservice.resourcemanagement.entities.RessourceBooking;
 import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
+import com.esprit.microservice.resourcemanagement.repositories.RessourceBookingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +22,7 @@ import java.util.UUID;
 public class ResourceService implements IResourceService{
 
     private ResourceRepository resourceRepository;
+    private RessourceBookingRepository bookingRepository;
     @Override
     public List<Resource> getAllResources() {
         return resourceRepository.findAll();
@@ -52,5 +60,36 @@ public class ResourceService implements IResourceService{
         }
         resourceRepository.deleteById(id);
 
+    }
+    @Override
+    public List<ResourceUtilizationReport> getResourceUtilizationReport(
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    ) {
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date must precede end date");
+        }
+        if (ChronoUnit.DAYS.between(startDate, endDate) > 365) {
+            throw new IllegalArgumentException("Date range cannot exceed 1 year");
+        }
+        return bookingRepository.getResourceUtilizationReport(startDate, endDate);
+    }
+
+    @Override
+    public List<BookingRevenueReport> getRessourceRevenueAndBookingPourcentage(LocalDateTime startDate, LocalDateTime endDate) {
+        List<BookingRevenueReport> revenueReports = new ArrayList<>() ;
+        List<Resource> resources = resourceRepository.findAll();
+        Double totalBookingHours = bookingRepository.getBookingTotalHoursBooked(startDate,endDate);
+        for (Resource resource : resources) {
+
+            Double resourceBookedHours = bookingRepository.getRessourceTotalHoursBooked(startDate,endDate,resource.getId());
+            Double resourceBookingPourcentage = (resourceBookedHours * 100)/totalBookingHours;
+            Double resourceBookingRevenue = resourceBookedHours * resource.getCostPerHour() ;
+
+            BookingRevenueReport bookingRevenueReport = new BookingRevenueReport(resource.getName(),resourceBookingPourcentage,resourceBookingRevenue);
+            revenueReports.add(bookingRevenueReport);
+        }
+
+        return revenueReports;
     }
 }

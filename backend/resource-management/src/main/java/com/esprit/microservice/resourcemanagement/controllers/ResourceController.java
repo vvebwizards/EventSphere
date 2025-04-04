@@ -1,8 +1,11 @@
 package com.esprit.microservice.resourcemanagement.controllers;
 
+import com.esprit.microservice.resourcemanagement.dto.BookingRequest;
+import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
 import com.esprit.microservice.resourcemanagement.services.ResourceService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +46,21 @@ public class ResourceController {
         resourceService.deleteResource(id);
         return ResponseEntity.noContent().build();
     }
-
+    @PostMapping("/utilizationReport")
+    public ResponseEntity<List<ResourceUtilizationReport>> postUtilizationReport(
+            @Valid @RequestBody BookingRequest request
+    ) {
+        return ResponseEntity.ok(
+                resourceService.getResourceUtilizationReport(
+                        request.getStartTime(),
+                        request.getEndTime()
+                )
+        );
+    }
+    @PostMapping("/BookingRevenueReport")
+    public  List<BookingRevenueReport> getRessourceRevenueAndBookingPourcentage(@RequestBody BookingRequest bookingRequest)
+    {
+        return resourceService.getRessourceRevenueAndBookingPourcentage(bookingRequest.getStartTime(),bookingRequest.getEndTime());
+    }
 
 }

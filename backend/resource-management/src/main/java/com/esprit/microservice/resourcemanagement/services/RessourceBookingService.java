@@ -53,17 +53,5 @@ public class RessourceBookingService implements IResourceBookingService{
     public void cancelBooking(UUID bookingId) {
         bookingRepository.deleteById(bookingId);
     }
-    @Override
-    public List<ResourceUtilizationReport> getResourceUtilizationReport(
-            LocalDateTime startDate,
-            LocalDateTime endDate
-    ) {
-        if (startDate.isAfter(endDate)) {
-            throw new IllegalArgumentException("Start date must precede end date");
-        }
-        if (ChronoUnit.DAYS.between(startDate, endDate) > 365) {
-            throw new IllegalArgumentException("Date range cannot exceed 1 year");
-        }
-        return bookingRepository.getResourceUtilizationReport(startDate, endDate);
-    }
+
 }

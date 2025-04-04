@@ -39,15 +39,5 @@ public class BookingController {
         bookingService.cancelBooking(id);
     }
 
-    @PostMapping("/utilizationReport")
-    public ResponseEntity<List<ResourceUtilizationReport>> postUtilizationReport(
-            @Valid @RequestBody BookingRequest request
-    ) {
-        return ResponseEntity.ok(
-                bookingService.getResourceUtilizationReport(
-                        request.getStartTime(),
-                        request.getEndTime()
-                )
-        );
-    }
+
 }

@@ -30,4 +30,32 @@ public interface RessourceBookingRepository extends JpaRepository<RessourceBooki
             @Param("endDate") LocalDateTime endDate
     );
 
+    @Query(value = """
+    SELECT
+        CAST(ROUND(SUM(EXTRACT(EPOCH FROM (b.end_time - b.start_time))/3600)) AS BIGINT) AS totalHoursBooked
+    FROM ressource_booking b
+    JOIN resource r ON b.resource_id = r.id
+     WHERE b.start_time BETWEEN :startDate AND :endDate
+    AND b.resource_id = :ressourceId
+    GROUP BY r.name;
+              
+""", nativeQuery = true)
+    Double getRessourceTotalHoursBooked(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            @Param("ressourceId") UUID ressourceId
+    );
+
+    @Query(value = """
+    SELECT
+        CAST(ROUND(SUM(EXTRACT(EPOCH FROM (b.end_time - b.start_time))/3600)) AS BIGINT) AS totalHoursBooked
+    FROM ressource_booking b
+    JOIN resource r ON b.resource_id = r.id
+     WHERE b.start_time BETWEEN :startDate AND :endDate
+              
+""", nativeQuery = true)
+    Double getBookingTotalHoursBooked(
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate
+    );
 }
