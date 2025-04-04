@@ -3,7 +3,9 @@ package com.esprit.microservice.resourcemanagement.controllers;
 import com.esprit.microservice.resourcemanagement.dto.BookingRequest;
 import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
+import com.esprit.microservice.resourcemanagement.dto.SearchResourceDTO;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
+import com.esprit.microservice.resourcemanagement.entities.ResourceType;
 import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
 import com.esprit.microservice.resourcemanagement.services.ResourceService;
 import jakarta.validation.Valid;
@@ -65,5 +67,10 @@ public class ResourceController {
         return resourceService.getRessourceRevenueAndBookingPourcentage(bookingRequest.getStartTime(),bookingRequest.getEndTime());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<Resource>> searchResources(@RequestBody SearchResourceDTO searchResourceDTO) {
+        List<Resource> resources = resourceService.searchResources(searchResourceDTO.getLocation(),searchResourceDTO.getType(),searchResourceDTO.getPriceRange(),searchResourceDTO.isAvailability());
+        return ResponseEntity.ok(resources);
+    }
 
 }

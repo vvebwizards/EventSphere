@@ -22,6 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -162,4 +163,32 @@ public class ResourceService implements IResourceService{
         log.info("[Scheduler] Monthly dynamic prices updated.");
     }
 
+    public List<Resource> searchResources(String location, ResourceType type, String priceRange, boolean availability) {
+        List<Resource> resources = resourceRepository.findAll();
+        if (location != null && !location.isEmpty()) {
+            resources = resources.stream()
+                    .filter(resource -> resource.getLocation().contains(location))
+                    .collect(Collectors.toList());
+        }
+        if (type != null) {
+            resources = resources.stream()
+                    .filter(resource -> resource.getType().equals(type))
+                    .collect(Collectors.toList());
+        }
+        if (priceRange != null && !priceRange.isEmpty()) {
+            String[] priceBounds = priceRange.split("-");
+            double minPrice = Double.parseDouble(priceBounds[0]);
+            double maxPrice = Double.parseDouble(priceBounds[1]);
+
+            resources = resources.stream()
+                    .filter(resource -> resource.getCostPerHour() >= minPrice && resource.getCostPerHour() <= maxPrice)
+                    .collect(Collectors.toList());
+        }
+        if (availability) {
+            resources = resources.stream()
+                    .filter(Resource::isAvailable)
+                    .collect(Collectors.toList());
+        }
+        return resources;
+    }
 }
