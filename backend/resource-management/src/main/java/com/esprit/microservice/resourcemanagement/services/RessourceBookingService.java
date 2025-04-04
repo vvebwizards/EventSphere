@@ -4,6 +4,7 @@ import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
 import com.esprit.microservice.resourcemanagement.entities.*;
 import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
 import com.esprit.microservice.resourcemanagement.repositories.RessourceBookingRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
@@ -52,9 +53,24 @@ public class RessourceBookingService implements IResourceBookingService{
     }
     @Override
     public void cancelBooking(UUID bookingId) {
-        bookingRepository.deleteById(bookingId);
+
+        RessourceBooking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
+        if (isCancellationEligible(booking)) {
+            booking.setStatus(BookingStatus.CANCELLED);
+
+             bookingRepository.save(booking);
+        } else {
+            throw new IllegalStateException("Cancellation not allowed for this booking you will have to pay cancelation fees.");
+        }
+    }
+    private boolean isCancellationEligible(RessourceBooking booking) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime bookingStartTime = booking.getStartTime();
+        long hoursBetween = ChronoUnit.HOURS.between(now, bookingStartTime);
+        return hoursBetween >= 24;
     }
 
-
-
 }
+
+

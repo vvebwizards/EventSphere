@@ -33,4 +33,7 @@ public class RessourceBooking {
     @Column(nullable = false)
     private String bookedBy;
 
+    @Enumerated(EnumType.STRING)
+    private BookingStatus  status= BookingStatus.CONFIRMED; ;
+
 }
