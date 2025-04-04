@@ -30,6 +30,22 @@ services:
     networks:
       - eventsphere-net
 
+  reclamation-management-service:
+    build: ./reclamation-management
+    image: hafedh21/event-reclamation-management:latest
+    ports:
+      - "8084:8084"
+    hostname: reclamation-event-management
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/reclamation_management?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+    depends_on:
+      - eureka_service
+      - mysql
+    networks:
+      - eventsphere-net
+
   gateway-service:
     build: ./Gateway
     image: wiem23/gateway-service:latest
@@ -58,9 +74,23 @@ services:
     networks:
       - eventsphere-net
 
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      - MYSQL_DATABASE=reclamation-event-management
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - eventsphere-net
+
 networks:
   eventsphere-net:
     driver: bridge
 
 volumes:
   postgres-data:
+  mysql-data:
