@@ -4,6 +4,7 @@ import com.esprit.microservice.resourcemanagement.dto.BookingRequest;
 import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
+import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
 import com.esprit.microservice.resourcemanagement.services.ResourceService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.UUID;
 @RequestMapping("/resources")
 @AllArgsConstructor
 public class ResourceController {
+    private final ResourceRepository resourceRepository;
     private  ResourceService resourceService;
 
     @GetMapping
@@ -62,5 +64,6 @@ public class ResourceController {
     {
         return resourceService.getRessourceRevenueAndBookingPourcentage(bookingRequest.getStartTime(),bookingRequest.getEndTime());
     }
+
 
 }

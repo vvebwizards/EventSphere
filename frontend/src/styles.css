@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+  @apply bg-gray-50 text-secondary-dark;
+  font-family: 'Arial', sans-serif;
+}
+
+.container {
+  @apply px-4 mx-auto;
+}
+
+/* Custom button styles */
+.btn {
+  @apply px-4 py-2 rounded transition-colors duration-200;
+}
+
+.btn-primary {
+  @apply bg-primary text-white hover:bg-primary-dark;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-white hover:bg-secondary-dark;
+}

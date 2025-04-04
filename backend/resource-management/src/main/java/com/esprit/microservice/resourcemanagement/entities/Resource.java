@@ -42,7 +42,10 @@ public class Resource {
     @Column(nullable = true)
     private LocalDateTime lastBookedDate;
 
+    private Double dynamicPricePerHour ;
+
     @Version
     private Integer version;
+
 
 }
