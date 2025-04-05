@@ -2,6 +2,8 @@ package com.esprit.microservice.resourcemanagement.services;
 
 import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
+import com.esprit.microservice.resourcemanagement.dto.SearchResourceDTO;
+import com.esprit.microservice.resourcemanagement.entities.BookingStatus;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
 import com.esprit.microservice.resourcemanagement.entities.ResourceType;
 import com.esprit.microservice.resourcemanagement.entities.RessourceBooking;
@@ -27,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ResourceService implements IResourceService{
+public class ResourceService implements IResourceService {
 
     private ResourceRepository resourceRepository;
 
@@ -69,9 +71,13 @@ public class ResourceService implements IResourceService{
         if (!resourceRepository.existsById(id)) {
             throw new EntityNotFoundException("Resource not found with ID: " + id);
         }
+        List<RessourceBooking> ressourceBookings = bookingRepository.findRessourceBookingByResourceIdAndStatus(id, BookingStatus.CONFIRMED);
+        if (!ressourceBookings.isEmpty()) {
+            throw new IllegalStateException("Cannot delete this resource because it is currently booked.");
+        }
         resourceRepository.deleteById(id);
-
     }
+
     @Override
     public List<ResourceUtilizationReport> getResourceUtilizationReport(
             LocalDateTime startDate,
@@ -88,15 +94,15 @@ public class ResourceService implements IResourceService{
 
     @Override
     public List<BookingRevenueReport> getRessourceRevenueAndBookingPourcentage(LocalDateTime startDate, LocalDateTime endDate) {
-        List<BookingRevenueReport> revenueReports = new ArrayList<>() ;
+        List<BookingRevenueReport> revenueReports = new ArrayList<>();
         List<Resource> resources = resourceRepository.findAll();
         for (Resource resource : resources) {
 
-            Double resourceBookedHours = bookingRepository.getRessourceTotalHoursBooked(startDate,endDate,resource.getId());
-            Double resourceBookingPourcentage = this.getResourceBookingPourcentage(resource,startDate,endDate);
-            Double resourceBookingRevenue = resourceBookedHours * resource.getCostPerHour() ;
+            Double resourceBookedHours = bookingRepository.getRessourceTotalHoursBooked(startDate, endDate, resource.getId());
+            Double resourceBookingPourcentage = this.getResourceBookingPourcentage(resource, startDate, endDate);
+            Double resourceBookingRevenue = resourceBookedHours * resource.getCostPerHour();
 
-            BookingRevenueReport bookingRevenueReport = new BookingRevenueReport(resource.getName(),resourceBookingPourcentage,resourceBookingRevenue);
+            BookingRevenueReport bookingRevenueReport = new BookingRevenueReport(resource.getName(), resourceBookingPourcentage, resourceBookingRevenue);
             revenueReports.add(bookingRevenueReport);
         }
 
@@ -107,6 +113,7 @@ public class ResourceService implements IResourceService{
         int dayOfWeek = date.getDayOfWeek().getValue();
         return dayOfWeek == 6 || dayOfWeek == 7;
     }
+
     private double getTimeFactor(Resource resource) {
 
         if (isWeekend(resource.getLastBookedDate())) {
@@ -115,12 +122,13 @@ public class ResourceService implements IResourceService{
         return 0.0;
     }
 
-    public Double getResourceBookingPourcentage(Resource resource , LocalDateTime startDate , LocalDateTime endDate) {
-        Double resourceBookedHours = bookingRepository.getRessourceTotalHoursBooked(startDate,endDate,resource.getId());
-        Double totalBookingHours = bookingRepository.getBookingTotalHoursBooked(startDate,endDate);
-        Double resourceBookingPourcentage = (resourceBookedHours * 100)/totalBookingHours;
-        return  resourceBookingPourcentage;
+    public Double getResourceBookingPourcentage(Resource resource, LocalDateTime startDate, LocalDateTime endDate) {
+        Double resourceBookedHours = bookingRepository.getRessourceTotalHoursBooked(startDate, endDate, resource.getId());
+        Double totalBookingHours = bookingRepository.getBookingTotalHoursBooked(startDate, endDate);
+        Double resourceBookingPourcentage = (resourceBookedHours * 100) / totalBookingHours;
+        return resourceBookingPourcentage;
     }
+
     private double getUtilizationFactor(Resource resource) {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime startOfMonth = now.withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
@@ -134,6 +142,7 @@ public class ResourceService implements IResourceService{
         }
         return 0.0;
     }
+
     public double calculateDynamicPrice(Resource resource) {
         double timeFactor = getTimeFactor(resource);
         double utilizationFactor = getUtilizationFactor(resource);
@@ -152,6 +161,7 @@ public class ResourceService implements IResourceService{
         }
         log.info("[Scheduler] Weekly dynamic prices updated.");
     }
+
     @Scheduled(cron = "0 0 0 1 * ?")
     public void updateMonthlyDynamicPrices() {
         List<Resource> resources = resourceRepository.findAll();
@@ -163,32 +173,44 @@ public class ResourceService implements IResourceService{
         log.info("[Scheduler] Monthly dynamic prices updated.");
     }
 
-    public List<Resource> searchResources(String location, ResourceType type, String priceRange, boolean availability) {
+    public List<Resource> searchResources(SearchResourceDTO searchResourceDTO) {
         List<Resource> resources = resourceRepository.findAll();
-        if (location != null && !location.isEmpty()) {
+
+       if (searchResourceDTO.getLocation() != null && !searchResourceDTO.getLocation().isEmpty()) {
             resources = resources.stream()
-                    .filter(resource -> resource.getLocation().contains(location))
+                    .filter(resource -> resource.getLocation().contains(searchResourceDTO.getLocation()))
                     .collect(Collectors.toList());
         }
-        if (type != null) {
+
+        if (searchResourceDTO.getType() != null) {
             resources = resources.stream()
-                    .filter(resource -> resource.getType().equals(type))
+                    .filter(resource -> resource.getType().equals(searchResourceDTO.getType()))
                     .collect(Collectors.toList());
         }
-        if (priceRange != null && !priceRange.isEmpty()) {
-            String[] priceBounds = priceRange.split("-");
+
+        if (searchResourceDTO.getPriceRange() != null && !searchResourceDTO.getPriceRange().isEmpty()) {
+            String[] priceBounds = searchResourceDTO.getPriceRange().split("-");
             double minPrice = Double.parseDouble(priceBounds[0]);
             double maxPrice = Double.parseDouble(priceBounds[1]);
 
             resources = resources.stream()
-                    .filter(resource -> resource.getCostPerHour() >= minPrice && resource.getCostPerHour() <= maxPrice)
+                    .filter(resource -> {
+                        double costPerHour = (double) resource.getCostPerHour();
+                        return costPerHour >= minPrice && costPerHour <= maxPrice;
+                    })
                     .collect(Collectors.toList());
         }
-        if (availability) {
-            resources = resources.stream()
-                    .filter(Resource::isAvailable)
-                    .collect(Collectors.toList());
+
+        if (Boolean.TRUE.equals(searchResourceDTO.getAvailability())) {
+            {
+                resources = resources.stream()
+                        .filter(Resource::isAvailable)
+                        .collect(Collectors.toList());
+            }
+
+
         }
         return resources;
     }
 }
+

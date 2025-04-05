@@ -33,7 +33,7 @@ public class Resource {
     private String description;
 
     @Column(nullable = false)
-    private boolean available;
+    private boolean available =true;
 
     private Long costPerHour;
 
@@ -46,6 +46,8 @@ public class Resource {
 
     @Version
     private Integer version;
+
+
 
 
 }

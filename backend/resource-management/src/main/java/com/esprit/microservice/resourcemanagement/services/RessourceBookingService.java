@@ -25,6 +25,10 @@ public class RessourceBookingService implements IResourceBookingService{
     @Override
     public RessourceBooking createBooking(UUID resourceId, LocalDateTime startTime, LocalDateTime endTime, String bookedBy) {
 
+        if (startTime.isAfter(endTime) || startTime.isEqual(endTime)) {
+            throw new RuntimeException("Start time must be before end time.");
+        }
+
         Resource resource = resourceRepository.findById(resourceId).orElse(null);
         if (resource == null || !resource.isAvailable()) {
             throw new RuntimeException("Resource not available");
@@ -49,20 +53,24 @@ public class RessourceBookingService implements IResourceBookingService{
     }
     @Override
     public List<RessourceBooking> getBookingsByResourceId(UUID resourceId) {
-        return bookingRepository.findByResourceIdAndStartTimeBetween(resourceId, LocalDateTime.now(), LocalDateTime.now());
+        return bookingRepository.findRessourceBookingByResourceId(resourceId);
     }
     @Override
     public void cancelBooking(UUID bookingId) {
-
         RessourceBooking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new EntityNotFoundException("Booking not found"));
-        if (isCancellationEligible(booking)) {
-            booking.setStatus(BookingStatus.CANCELLED);
 
-             bookingRepository.save(booking);
+        booking.setStatus(BookingStatus.CANCELLED);
+
+        if (!isCancellationEligible(booking)) {
+
+            Double cancellationFee = calculateCancellationFee(booking);
+            booking.setCancelationFee(cancellationFee);
         } else {
-            throw new IllegalStateException("Cancellation not allowed for this booking you will have to pay cancelation fees.");
+            booking.setCancelationFee(0.0);
         }
+
+        bookingRepository.save(booking);
     }
     private boolean isCancellationEligible(RessourceBooking booking) {
         LocalDateTime now = LocalDateTime.now();
@@ -70,6 +78,12 @@ public class RessourceBookingService implements IResourceBookingService{
         long hoursBetween = ChronoUnit.HOURS.between(now, bookingStartTime);
         return hoursBetween >= 24;
     }
+    private Double calculateCancellationFee(RessourceBooking booking) {
+        long hoursBooked = ChronoUnit.HOURS.between(booking.getStartTime(), booking.getEndTime());
+        Double totalCost = Double.valueOf(hoursBooked * booking.getResource().getCostPerHour());
+        return totalCost*0.3;
+    }
+
 
 }
 

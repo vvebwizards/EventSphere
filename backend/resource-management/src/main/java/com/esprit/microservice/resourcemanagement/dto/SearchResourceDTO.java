@@ -1,6 +1,7 @@
 package com.esprit.microservice.resourcemanagement.dto;
 
 import com.esprit.microservice.resourcemanagement.entities.ResourceType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +12,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchResourceDTO {
+    @Schema
     private String location;
+    @Schema
     private ResourceType type;
+    @Schema
     private String priceRange;
-    private boolean availability;
+    @Schema
+    private Boolean  availability;
 
 
 }

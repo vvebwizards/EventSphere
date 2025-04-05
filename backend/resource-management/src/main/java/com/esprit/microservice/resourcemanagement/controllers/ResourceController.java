@@ -25,7 +25,7 @@ public class ResourceController {
     private final ResourceRepository resourceRepository;
     private  ResourceService resourceService;
 
-    @GetMapping
+    @GetMapping("/getAll")
     public ResponseEntity<List<Resource>> getAllResources() {
         return ResponseEntity.ok(resourceService.getAllResources());
     }
@@ -67,10 +67,10 @@ public class ResourceController {
         return resourceService.getRessourceRevenueAndBookingPourcentage(bookingRequest.getStartTime(),bookingRequest.getEndTime());
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Resource>> searchResources(@RequestBody SearchResourceDTO searchResourceDTO) {
-        List<Resource> resources = resourceService.searchResources(searchResourceDTO.getLocation(),searchResourceDTO.getType(),searchResourceDTO.getPriceRange(),searchResourceDTO.isAvailability());
-        return ResponseEntity.ok(resources);
+    @PostMapping(value = "/search")
+    public List<Resource> searchResources(@RequestBody SearchResourceDTO searchResourceDTO) {
+        return resourceService.searchResources(searchResourceDTO);
     }
+
 
 }

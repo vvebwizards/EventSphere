@@ -1,6 +1,7 @@
 package com.esprit.microservice.resourcemanagement.repositories;
 
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
+import com.esprit.microservice.resourcemanagement.entities.BookingStatus;
 import com.esprit.microservice.resourcemanagement.entities.RessourceBooking;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -58,4 +59,7 @@ public interface RessourceBookingRepository extends JpaRepository<RessourceBooki
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate
     );
+
+   List<RessourceBooking>  findRessourceBookingByResourceId(UUID resourceId);
+   List<RessourceBooking> findRessourceBookingByResourceIdAndStatus(UUID resourceId, BookingStatus status);
 }
