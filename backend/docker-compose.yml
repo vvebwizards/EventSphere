@@ -46,6 +46,34 @@ services:
     networks:
       - eventsphere-net
 
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - eventsphere-net
+
+  event-management-service:
+    build: ./event-management
+    image: trabelsinour154/event-management:latest
+    ports:
+      - "8085:8085"
+    hostname: event-management-service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventdb
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - SERVER_PORT=8085
+    depends_on:
+      - eureka_service
+      - mongo
+    networks:
+      - eventsphere-net
+
+
+
   gateway-service:
     build: ./Gateway
     image: wiem23/gateway-service:latest
@@ -94,3 +122,7 @@ networks:
 volumes:
   postgres-data:
   mysql-data:
+  mongo-data:
+
+
+
