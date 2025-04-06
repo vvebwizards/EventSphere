@@ -33,7 +33,7 @@ public class Resource {
     private String description;
 
     @Column(nullable = false)
-    private boolean available;
+    private boolean available =true;
 
     private Long costPerHour;
 
@@ -42,7 +42,12 @@ public class Resource {
     @Column(nullable = true)
     private LocalDateTime lastBookedDate;
 
+    private Double dynamicPricePerHour ;
+
     @Version
     private Integer version;
+
+
+
 
 }

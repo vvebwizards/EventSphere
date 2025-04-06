@@ -73,6 +73,18 @@ services:
       - eventsphere-net
 
 
+  payment-management-service:
+    build: ./payment-management
+    image: riahiyassine/payment-management:latest
+    ports:
+      - "8088:8088"
+    hostname: payment-management
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+    depends_on:
+      - eureka_service
+    networks:
+      - eventsphere-net
 
   gateway-service:
     build: ./Gateway
