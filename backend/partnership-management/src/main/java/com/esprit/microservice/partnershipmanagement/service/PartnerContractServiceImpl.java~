@@ -1,4 +1,0 @@
-package com.esprit.microservice.partnershipmanagement.service;
-
-public class PartnerContractServiceImpl {
-}
