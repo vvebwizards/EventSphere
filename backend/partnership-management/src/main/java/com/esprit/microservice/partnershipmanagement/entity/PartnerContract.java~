@@ -1,0 +1,46 @@
+package com.esprit.microservice.partnershipmanagement.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "partner_contracts")
+public class PartnerContract {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long partnerId;
+
+    private String contractType;
+
+    // Assume the file is stored locally and filePath stores the path or URL.
+    private String filePath;
+
+    private LocalDateTime uploadDate;
+
+    private LocalDateTime expirationDate;
+
+    private String verificationStatus; // e.g., PENDING, VERIFIED
+
+    private String verifiedBy;
+
+    private LocalDateTime verificationDate;
+
+    // Constructors, getters, and setters
+    public PartnerContract() {
+    }
+
+    public PartnerContract(Long partnerId, String contractType, String filePath, LocalDateTime uploadDate,
+                           LocalDateTime expirationDate, String verificationStatus) {
+        this.partnerId = partnerId;
+        this.contractType = contractType;
+        this.filePath = filePath;
+        this.uploadDate = uploadDate;
+        this.expirationDate = expirationDate;
+        this.verificationStatus = verificationStatus;
+    }
+
+    // Getters and setters for each field...
+}
