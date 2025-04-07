@@ -11,8 +11,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity
-                                                                 serverHttpSecurity) {
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) {
         return serverHttpSecurity.csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange.pathMatchers("/eureka/**")
                         .permitAll()

@@ -1,6 +1,7 @@
 version: '3.8'
 services:
   eureka_service:
+    build: ./Eureka
     image: wiem23/eureka:latest
     container_name: discovery-service
     hostname: eureka_service
@@ -12,6 +13,7 @@ services:
       - eventsphere-net
 
   resource-management-service:
+    build: ./resource-management
     image: wiem23/event-resource-management:latest
     ports:
       - "8087:8087"
@@ -29,6 +31,7 @@ services:
       - eventsphere-net
 
   reclamation-management-service:
+    build: ./reclamation-management
     image: hafedh21/event-reclamation-management:latest
     ports:
       - "8084:8084"
@@ -54,6 +57,7 @@ services:
       - eventsphere-net
 
   event-management-service:
+    build: ./event-management
     image: trabelsinour154/event-management:latest
     ports:
       - "8085:8085"
@@ -70,6 +74,7 @@ services:
 
 
   payment-management-service:
+    build: ./payment-management
     image: riahiyassine/payment-management:latest
     ports:
       - "8088:8088"
@@ -82,6 +87,7 @@ services:
       - eventsphere-net
 
   gateway-service:
+    build: ./Gateway
     image: wiem23/gateway-service:latest
     ports:
       - "8082:8082"
@@ -129,6 +135,3 @@ volumes:
   postgres-data:
   mysql-data:
   mongo-data:
-
-
-
