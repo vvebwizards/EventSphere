@@ -1,4 +1,4 @@
-# **EventSphere**
+# 🎉 **EventSphere**
 
 This project demonstrates a **microservices-based event management system**, designed to showcase service communication patterns in a distributed architecture. The system is composed of several independently deployable services, each with its own database, working together to provide comprehensive event management functionality.
 
@@ -26,6 +26,38 @@ This project demonstrates a **microservices-based event management system**, des
 
 ---
 
+## 👥 Module Contributors
+
+| Module                   | Contributor        | Database     |
+|--------------------------|--------------------|--------------|
+| Event Management         | Trabelsi Nour      | MongoDB      |
+| Partnership Management   | Soufien Ben Salah  | MySQL        |
+| Payment Management       | Yassine Riahi      | H2           |
+| Reclamation Management   | Jendoubi Hafedh    | MySQL        |
+| Resource Management      | Wiem Ben Salah     | PostgreSQL   |
+
+---
+
+## 📁 Project Structure
+
+```
+EventSphere/
+├── backend/
+│   ├── Eureka/
+│   ├── Gateway/
+│   ├── event-management/
+│   ├── partnership-management/
+│   ├── payment-management/
+│   ├── reclamation-management/
+│   ├── resource-management/
+│   └── docker-compose.yml
+├── frontend/
+│   ├── src/
+│   └── ...
+```
+
+---
+
 ## **Clone and Run the Project**
 
 ### **1. Clone the Repository**
@@ -47,3 +79,9 @@ mvn clean package
 ```bash
 docker-compose up --build
 ```
+
+---
+
+## 📝 License
+
+MIT License
