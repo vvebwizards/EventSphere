@@ -13,9 +13,10 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity serverHttpSecurity) {
         return serverHttpSecurity.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchange -> exchange.pathMatchers("/eureka/**")
-                        .permitAll()
-                        .anyExchange().authenticated()
+                .authorizeExchange(exchange -> exchange
+                        .pathMatchers("/eureka/**").permitAll() // Allow unauthenticated access to Eureka endpoints
+                        .pathMatchers("/reclamation/**").permitAll() // Allow unauthenticated access to reclamation endpoints
+                        .anyExchange().authenticated() // Require authentication for all other endpoints
                 ).oauth2ResourceServer((oauth) -> oauth
                         .jwt(Customizer.withDefaults()))
                 .build();
