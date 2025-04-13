@@ -1,14 +1,13 @@
 version: '3.8'
 services:
   eureka_service:
-    build: ./Eureka
-    image: wiem23/eureka:latest
+    image: hafedh21/discovery-service:latest
     container_name: discovery-service
-    hostname: eureka_service
+    hostname: discovery-service
     ports:
       - "9000:9000"
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
     networks:
       - eventsphere-net
 
@@ -40,6 +39,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/reclamation_management?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=root
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
     depends_on:
       - eureka_service
       - mysql
@@ -93,7 +93,7 @@ services:
       - "8082:8082"
     hostname: gateway-service
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
       - SERVER_PORT=8082
     depends_on:
       - eureka_service

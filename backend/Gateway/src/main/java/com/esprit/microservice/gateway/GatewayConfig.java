@@ -12,19 +12,19 @@ public class GatewayConfig {
         return builder.routes()
                 // Route for Reclamation microservice
                 .route("reclamation", r -> r.path("/reclamation/**")
-                        .uri("http://localhost:8084"))
+                        .uri("lb://reclamation-management")) // Use Eureka service ID
                 // Route for Event microservice
                 .route("event", r -> r.path("/event/**")
-                        .uri("http://localhost:8085"))
+                        .uri("lb://event-management")) // Update to use Eureka service ID
                 // Route for Partnership microservice
                 .route("partnership", r -> r.path("/partnership/**")
-                        .uri("http://localhost:8086"))
+                        .uri("lb://partnership-management")) // Update if applicable
                 // Route for Resource microservice
                 .route("resource", r -> r.path("/resource/**")
-                        .uri("http://localhost:8087"))
+                        .uri("lb://resource-management")) // Update to use Eureka service ID
                 // Route for Payment microservice
                 .route("payment", r -> r.path("/payment/**")
-                        .uri("http://localhost:8088"))
+                        .uri("lb://payment-management")) // Update to use Eureka service ID
                 .build();
     }
 }
