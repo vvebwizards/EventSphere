@@ -1,4 +1,4 @@
-package com.esprit.microservice.gateway;
+package com.esprit.microservice.gateway.config;
 
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
@@ -20,7 +20,7 @@ public class GatewayConfig {
                 .route("partnership", r -> r.path("/partnership/**")
                         .uri("lb://partnership-management")) // Update if applicable
                 // Route for Resource microservice
-                .route("resource", r -> r.path("/resource/**")
+                .route("resource-management", r -> r.path("/resource-api/**")
                         .uri("lb://resource-management")) // Update to use Eureka service ID
                 // Route for Payment microservice
                 .route("payment", r -> r.path("/payment/**")

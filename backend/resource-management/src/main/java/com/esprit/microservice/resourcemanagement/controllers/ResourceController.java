@@ -8,23 +8,40 @@ import com.esprit.microservice.resourcemanagement.entities.Resource;
 import com.esprit.microservice.resourcemanagement.entities.ResourceType;
 import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
 import com.esprit.microservice.resourcemanagement.services.ResourceService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/resources")
 @AllArgsConstructor
 public class ResourceController {
+
+
     private final ResourceRepository resourceRepository;
     private  ResourceService resourceService;
 
+    @RolesAllowed("user")
     @GetMapping("/getAll")
     public ResponseEntity<List<Resource>> getAllResources() {
         return ResponseEntity.ok(resourceService.getAllResources());
@@ -71,6 +88,4 @@ public class ResourceController {
     public List<Resource> searchResources(@RequestBody SearchResourceDTO searchResourceDTO) {
         return resourceService.searchResources(searchResourceDTO);
     }
-
-
 }
