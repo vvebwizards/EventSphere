@@ -1,11 +1,12 @@
 const { initializeAdminClient } = require('../config/keycloak-admin');
 const User = require('../models/User');
+const axios = require('axios');
 require('dotenv').config();
 const signUp = async (req, res) => {
   try {
-    const { email, password, fullName, role } = req.body;
+    const { email, password, firstName,lastName, role } = req.body;
 
-    if (!email || !password || !fullName) {
+    if (!email || !password || !firstName ||!lastName) {
       return res.status(400).json({
         success: false,
         message: 'Veuillez fournir email, mot de passe, nom complet.',
@@ -21,14 +22,12 @@ const signUp = async (req, res) => {
         message: 'Cet utilisateur existe déjà dans Keycloak',
       });
     }
-    const [firstName, ...lastNameParts] = fullName.split(' ');
-    const lastName = lastNameParts.join(' ');
 
     const keycloakUser = {
       username: email,
       email,
-      firstName: firstName || fullName,
-      lastName: lastName || '',
+      firstName: firstName ,
+      lastName: lastName,
       enabled: true,
       emailVerified: false,
       credentials: [{
@@ -50,8 +49,8 @@ const signUp = async (req, res) => {
     const newUser = new User({
       email,
       username: email,
-      firstName: firstName || fullName,
-      lastName: lastName || '',
+      firstName: firstName ,
+      lastName: lastName ,
       role,
       joined_at: new Date()
     });
@@ -74,41 +73,42 @@ const signUp = async (req, res) => {
 const signIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const keycloakAdminClient = await initializeAdminClient();
-    const token = await keycloakAdminClient.auth({
-      username: email,
-      password: password,
-      client_id: 'user-management-nodejs', 
-      grant_type: 'password',
-    });
 
-    if (!token || !token.access_token) {
-      return res.status(403).json({
-        success: false,
-        message: 'Authentication failed. Invalid email or password.',
-      });
-    }
+    const params = new URLSearchParams();
+    params.append('client_id', process.env.KEYCLOAK_CLIENT); 
+    params.append('client_secret', process.env.KEYCLOAK_CLIENT_SECRET); 
+    params.append('grant_type', 'password');
+    params.append('username', email);
+    params.append('password', password);
 
-    const userInfo = token.content;
+    const tokenResponse = await axios.post(
+      `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM_NAME}/protocol/openid-connect/token`,
+      params,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    const { access_token, refresh_token, id_token } = tokenResponse.data;
+
     return res.json({
       success: true,
-      user: {
-        id: userInfo.sub, 
-        email: userInfo.email,
-        fullName: userInfo.preferred_username, 
-        roles: userInfo.realm_access?.roles || [],
-      },
-      accessToken: token.access_token, 
-      refreshToken: token.refresh_token, 
+      accessToken: access_token,
+      refreshToken: refresh_token,
+      idToken: id_token,
     });
+
   } catch (error) {
     console.error('SignIn error:', error.response?.data || error.message);
     return res.status(500).json({
       success: false,
       message: 'Authentication error',
-      error: error.message,
+      error: error.response?.data?.error_description || error.message,
     });
   }
 };
+
 
 module.exports = { signUp ,signIn};

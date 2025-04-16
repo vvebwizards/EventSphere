@@ -2,7 +2,7 @@ require('dotenv').config();
 const session = require('express-session');
 const Keycloak = require('keycloak-connect');
 const {
-   KEYCKLOAK_CLIENT_SECRET,
+  KEYCLOAK_CLIENT_SECRET,
    KEYCLOAK_URL
   } = process.env;
 const memoryStore = new session.MemoryStore();
@@ -13,7 +13,7 @@ const keycloak = new Keycloak({ store: memoryStore }, {
   "ssl-required": "external",
   "resource": "user-management-nodejs",
   "credentials": {
-    "secret": KEYCKLOAK_CLIENT_SECRET
+    "secret": KEYCLOAK_CLIENT_SECRET
   },
 });
 

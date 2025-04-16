@@ -18,7 +18,7 @@ async function initializeAdminClient() {
     });
 
     kcAdminClient.setConfig({
-      realmName: process.env.KEYCLOAK_REALM_NAME || 'eventsphere-realm',
+      realmName: process.env.KEYCLOAK_REALM_NAME,
     });
   }
 

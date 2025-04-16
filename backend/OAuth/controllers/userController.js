@@ -1,7 +1,8 @@
 const express = require('express');
 const { keycloak } = require('../config/keycloak-config');
 const User=require('../models/User');
-
+const axios = require('axios');
+require('dotenv').config();
 
 const  getCurrentUser = [
   keycloak.protect(), 
@@ -20,33 +21,47 @@ const  getCurrentUser = [
   }
 ];
 
-const logout = [
-  keycloak.protect(),  
-  async (req, res) => {
-    try {
-      await keycloak.grantManager.revokeGrant(req.kauth.grant);
-      req.session.destroy((err) => {
-        if (err) {
-          return res.status(500).json({
-            success: false,
-            message: 'Error destroying session',
-            error: err.message,
-          });
-        }
-        res.json({
-          success: true,
-          message: 'Logged out successfully',
-        });
-      });
-    } catch (error) {
-      res.status(500).json({
+const logout = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({
         success: false,
-        message: 'Server error',
-        error: error.message,
+        message: 'Refresh token is required for logout.',
       });
     }
+
+    const params = new URLSearchParams();
+    params.append('client_id', process.env.KEYCLOAK_CLIENT);
+    params.append('client_secret', process.env.KEYCLOAK_CLIENT_SECRET); // only if confidential
+    params.append('refresh_token', refreshToken);
+
+    await axios.post(
+      `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM_NAME}/protocol/openid-connect/logout`,
+      params,
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    );
+
+    res.json({
+      success: true,
+      message: 'Logged out successfully',
+    });
+
+  } catch (error) {
+    console.error('Logout error:', error.response?.data || error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Logout failed',
+      error: error.response?.data?.error_description || error.message,
+    });
   }
-];
+};
+
   
 
 module.exports = {
