@@ -11,10 +11,6 @@ const UserSchema = new Schema({
     required: true, 
     enum: ['resource-owner', 'user', 'event-creator', 'partner'] 
   },
-  photo: { type: String },
-  resetPasswordToken: { type: String },
-  resetPasswordExpires: { type: Date },
-  refreshToken: { type: String },
   joined_at: { type: Date, default: Date.now },
   updated_at: { type: Date }
 });

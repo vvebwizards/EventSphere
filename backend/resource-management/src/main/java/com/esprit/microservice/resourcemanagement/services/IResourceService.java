@@ -17,4 +17,5 @@ public interface IResourceService {
     public void deleteResource(UUID id);
     public  List<ResourceUtilizationReport> getResourceUtilizationReport(LocalDateTime startDate, LocalDateTime endDate);
     public  List<BookingRevenueReport> getRessourceRevenueAndBookingPourcentage(LocalDateTime startDate, LocalDateTime endDate);
+    public List<Resource> getAllResourcesByOwnerId();
 }

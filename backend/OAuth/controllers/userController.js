@@ -10,13 +10,14 @@ const  getCurrentUser = [
     const userInfo = req.kauth.grant.access_token.content;
 
     res.json({
-      success: true,
-      user: {
-        id: userInfo.sub,                          
-        username: userInfo.preferred_username,     
-        email: userInfo.email,                     
-        roles: userInfo.realm_access?.roles || []  
-      }
+      id: userInfo.sub,
+      email: userInfo.email,
+      username: userInfo.preferred_username,
+      firstName: userInfo.given_name || null,
+      lastName: userInfo.family_name || null,
+      role: (userInfo.realm_access?.roles || []).includes('user') ? 'user' : null,
+      joined_at: null,
+      updated_at: null
     });
   }
 ];
@@ -34,7 +35,7 @@ const logout = async (req, res) => {
 
     const params = new URLSearchParams();
     params.append('client_id', process.env.KEYCLOAK_CLIENT);
-    params.append('client_secret', process.env.KEYCLOAK_CLIENT_SECRET); // only if confidential
+    params.append('client_secret', process.env.KEYCLOAK_CLIENT_SECRET); 
     params.append('refresh_token', refreshToken);
 
     await axios.post(

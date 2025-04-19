@@ -47,22 +47,32 @@ public class ResourceController {
         return ResponseEntity.ok(resourceService.getAllResources());
     }
 
+    @RolesAllowed("resource-owner")
+    @GetMapping("/my-resources")
+    public List<Resource> getAllResourcesByOwnerId(){
+        return  resourceService.getAllResourcesByOwnerId();
+    }
+
     @GetMapping("/getOne/{id}")
+    @RolesAllowed("user")
     public ResponseEntity<Resource> getResourceById(@PathVariable UUID id) {
         return ResponseEntity.ok(resourceService.getResourceById(id));
     }
-
+    @RolesAllowed("resource-owner")
     @PostMapping("/addOne")
     public ResponseEntity<Resource> createResource(@RequestBody Resource resource) {
+
         return ResponseEntity.ok(resourceService.createResource(resource));
     }
 
-    @PutMapping("updateOne/{id}")
+    @PutMapping("/updateOne/{id}")
+    @RolesAllowed("resource-owner")
     public ResponseEntity<Resource> updateResource(@PathVariable UUID id, @RequestBody Resource resource) {
         return ResponseEntity.ok(resourceService.updateResource(id, resource));
     }
 
     @DeleteMapping("Delete/{id}")
+    @RolesAllowed("resource-owner")
     public ResponseEntity<Void> deleteResource(@PathVariable UUID id) {
         resourceService.deleteResource(id);
         return ResponseEntity.noContent().build();
@@ -85,7 +95,10 @@ public class ResourceController {
     }
 
     @PostMapping(value = "/search")
+
     public List<Resource> searchResources(@RequestBody SearchResourceDTO searchResourceDTO) {
         return resourceService.searchResources(searchResourceDTO);
     }
+
+
 }

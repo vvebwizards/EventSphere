@@ -1,8 +1,10 @@
 package com.esprit.microservice.resourcemanagement.services;
 
+import com.esprit.microservice.resourcemanagement.config.UserClient;
 import com.esprit.microservice.resourcemanagement.dto.BookingRevenueReport;
 import com.esprit.microservice.resourcemanagement.dto.ResourceUtilizationReport;
 import com.esprit.microservice.resourcemanagement.dto.SearchResourceDTO;
+import com.esprit.microservice.resourcemanagement.dto.UserDTO;
 import com.esprit.microservice.resourcemanagement.entities.BookingStatus;
 import com.esprit.microservice.resourcemanagement.entities.Resource;
 import com.esprit.microservice.resourcemanagement.entities.ResourceType;
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,12 +37,26 @@ public class ResourceService implements IResourceService {
     private ResourceRepository resourceRepository;
 
     private RessourceBookingRepository bookingRepository;
+    private final UserClient userClient;
 
-
+    // user can see all the ressources
     @Override
     public List<Resource> getAllResources() {
         return resourceRepository.findAll();
     }
+    //resource owner can retrieve only his resources
+    @Override
+    public List<Resource> getAllResourcesByOwnerId() {
+        ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            throw new RuntimeException("Unauthorized: Cannot fetch resources without user ID.");
+        }
+
+        return resourceRepository.findResourceByOwnerId(currentUser.getId());
+    }
+
 
     @Override
     public Resource getResourceById(UUID id) {
@@ -47,29 +64,57 @@ public class ResourceService implements IResourceService {
                 .orElseThrow(() -> new EntityNotFoundException("Resource not found with ID: " + id));
     }
 
+
+    //add the resource by owner id
     @Override
     @Transactional
     public Resource createResource(Resource resource) {
+        ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            throw new RuntimeException("Unauthorized: Cannot create resource without user ID.");
+        }
+
+        resource.setOwnerId(currentUser.getId());
+
         return resourceRepository.save(resource);
     }
-
+    //only the resource owner can update the resource
     @Override
     public Resource updateResource(UUID id, Resource resourceDetails) {
-        Resource resource = getResourceById(id);
+        ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            throw new RuntimeException("User not found or unauthorized");
+        }
+
+        Resource resource = resourceRepository.findResourceByOwnerIdAndId(currentUser.getId(), id);
+        if (resource == null) {
+            throw new EntityNotFoundException("Resource not found for this user");
+        }
+
         resource.setName(resourceDetails.getName());
         resource.setType(resourceDetails.getType());
         resource.setDescription(resourceDetails.getDescription());
         resource.setAvailable(resourceDetails.isAvailable());
         resource.setCostPerHour(resourceDetails.getCostPerHour());
-        resource.setLocation(resource.getLocation());
+        resource.setLocation(resourceDetails.getLocation()); // Fixed
         resource.setLastBookedDate(resourceDetails.getLastBookedDate());
+
         return resourceRepository.save(resource);
     }
 
+    //only the owner can delete the resource
     @Override
     public void deleteResource(UUID id) {
-        if (!resourceRepository.existsById(id)) {
-            throw new EntityNotFoundException("Resource not found with ID: " + id);
+        ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        Resource resource = resourceRepository.findResourceByOwnerIdAndId(currentUser.getId(),id);
+        if (resource== null) {
+            throw new EntityNotFoundException("Resource not found ");
         }
         List<RessourceBooking> ressourceBookings = bookingRepository.findRessourceBookingByResourceIdAndStatus(id, BookingStatus.CONFIRMED);
         if (!ressourceBookings.isEmpty()) {

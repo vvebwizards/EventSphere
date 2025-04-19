@@ -12,5 +12,6 @@ import java.util.UUID;
 @Repository
 public interface ResourceRepository extends JpaRepository<Resource, UUID> {
 
-
+    List<Resource> findResourceByOwnerId(String ownerId);
+    Resource findResourceByOwnerIdAndId(String ownerId, UUID resourceID);
 }

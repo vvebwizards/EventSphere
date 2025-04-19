@@ -43,6 +43,8 @@ public class Resource {
     private LocalDateTime lastBookedDate;
 
     private Double dynamicPricePerHour ;
+    @Column(nullable = false)
+    private String ownerId;
 
     @Version
     private Integer version;

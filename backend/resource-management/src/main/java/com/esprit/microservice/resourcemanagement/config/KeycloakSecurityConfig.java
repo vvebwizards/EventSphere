@@ -42,7 +42,7 @@ public class KeycloakSecurityConfig {
                                 "/swagger-ui.html",
                                 "/actuator/**"
                         ).permitAll()
-                        .anyRequest().hasRole("user")
+                        .anyRequest().hasAnyRole("user", "resource-owner", "event-creator", "partner")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
