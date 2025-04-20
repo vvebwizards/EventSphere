@@ -8,14 +8,16 @@ const  getCurrentUser = [
   keycloak.protect(), 
   (req, res) => {
     const userInfo = req.kauth.grant.access_token.content;
-
+    const roles = userInfo.realm_access?.roles || [];
+    const appRoles = ['resource-owner', 'user', 'event-creator', 'partner'];
+    const matchedRole = roles.find(role => appRoles.includes(role));
     res.json({
   id: userInfo.sub,
   email: userInfo.email,
   username: userInfo.preferred_username,
   firstName: userInfo.given_name || null,
   lastName: userInfo.family_name || null,
-  role: (userInfo.realm_access?.roles || []).includes('user') ? 'user' : null,
+  role: matchedRole || null,
   joined_at: null,
   updated_at: null
 });
