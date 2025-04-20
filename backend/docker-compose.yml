@@ -64,7 +64,7 @@ services:
     hostname: event-management-service
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventdb
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
       - SERVER_PORT=8085
     depends_on:
       - eureka_service
