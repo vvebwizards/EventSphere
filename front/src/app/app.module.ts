@@ -10,14 +10,14 @@ import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ResourceCardComponent } from './shared/components/resource-card/resource-card.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -33,13 +33,15 @@ import { FormsModule } from '@angular/forms';
     MyBookingsComponent,
     ReclamationsComponent,
     ResetPasswordComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    FormsModule
 
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

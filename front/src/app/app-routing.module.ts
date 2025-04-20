@@ -9,6 +9,8 @@ import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -20,7 +22,7 @@ const routes: Routes = [
   { path: 'reclamations', component: ReclamationsComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'update-password', component: UpdatePasswordComponent },
-
+  { path: 'profile', component: UserProfileComponent }
 ];
 
 @NgModule({
