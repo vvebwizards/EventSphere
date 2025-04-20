@@ -1,4 +1,4 @@
-  import { HttpClient } from '@angular/common/http';
+  import { HttpClient, HttpHeaders } from '@angular/common/http';
   import { Injectable } from '@angular/core';
   import { Observable } from 'rxjs';
 
@@ -9,6 +9,7 @@
 
     private apiUrlSignUp  = `http://localhost:3000/register`;
     private apiUrlSignIn = `http://localhost:3000/signIn`;
+    private apiUrlGetUser = 'http://localhost:3000/user/getMe';
 
     constructor(private http: HttpClient) {}
 
@@ -24,4 +25,8 @@
     login(email: string, password: string): Observable<any> {
       return this.http.post(this.apiUrlSignIn, { email, password });
     }
+    getCurrentUser(token: string): Observable<any> {
+      const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+      return this.http.get<any>(this.apiUrlGetUser, { headers });
+  }
   }

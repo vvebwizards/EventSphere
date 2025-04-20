@@ -1,1 +1,25 @@
-<p>user-profile works!</p>
+<div class="profile-container" *ngIf="!loading && user; else loadingOrError">
+    <div class="profile-content">
+      <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?t=st=1745177140~exp=1745180740~hmac=c35c4e1b3ef497a525608c03cf1c5514d52f7628def222a80335c53fb2dde926&w=740" alt="User avatar" class="profile-avatar" />
+      <div class="profile-info">
+        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+        <div class="info-row">
+          <span class="label">Email:</span>
+          <span class="value">{{ user.email }}</span>
+        </div>
+        <!-- <div class="info-row">
+          <span class="label">Role:</span>
+          <span class="value">{{ user.role }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Joined:</span>
+          <span class="value">{{ user.joined_at | date: 'mediumDate' }}</span>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #loadingOrError>
+    <div class="text-center" *ngIf="loading">Loading profile...</div>
+    <div class="text-center text-danger" *ngIf="error">{{ error }}</div>
+  </ng-template>

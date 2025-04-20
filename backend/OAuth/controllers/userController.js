@@ -10,15 +10,15 @@ const  getCurrentUser = [
     const userInfo = req.kauth.grant.access_token.content;
 
     res.json({
-      id: userInfo.sub,
-      email: userInfo.email,
-      username: userInfo.preferred_username,
-      firstName: userInfo.given_name || null,
-      lastName: userInfo.family_name || null,
-      role: (userInfo.realm_access?.roles || []).includes('user') ? 'user' : null,
-      joined_at: null,
-      updated_at: null
-    });
+  id: userInfo.sub,
+  email: userInfo.email,
+  username: userInfo.preferred_username,
+  firstName: userInfo.given_name || null,
+  lastName: userInfo.family_name || null,
+  role: (userInfo.realm_access?.roles || []).includes('user') ? 'user' : null,
+  joined_at: null,
+  updated_at: null
+});
   }
 ];
 

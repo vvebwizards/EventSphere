@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,5 +8,40 @@ import { Component } from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  isLoggedIn: boolean = false;
+  firstName: string = '';
+  lastName: string = '';
 
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.checkLoginStatus();
+  }
+
+  checkLoginStatus(): void {
+    const token = localStorage.getItem('accessToken');
+  
+    if (token) {
+      this.isLoggedIn = true;
+      this.authService.getCurrentUser(token).subscribe(
+        (userData) => {
+          if (userData) {
+            this.firstName = userData.firstName;
+            this.lastName = userData.lastName;
+          }
+        },
+        (error) => {
+          console.error('Error fetching user info:', error);
+          this.isLoggedIn = false;
+        }
+      );
+    } else {
+      this.isLoggedIn = false;  
+    }
+  }
+
+  logout(): void {
+    // this.authService.logout(); 
+    // this.isLoggedIn = false;
+  }
 }
