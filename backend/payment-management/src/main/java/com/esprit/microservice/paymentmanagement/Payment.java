@@ -1,6 +1,7 @@
 package com.esprit.microservice.paymentmanagement;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -9,10 +10,19 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotBlank(message = "Payer email is required")
+    @Email(message = "Payer must be a valid email")
     private String payer;
-    private double amount;
-    private String method; // e.g. "Credit Card", "PayPal"
+
+    @Positive(message = "Amount must be greater than zero")
+    private Double amount;
+
+    @NotBlank(message = "Payment method is required")
+    private String method;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
     private LocalDateTime timestamp;
 
     public Long getId() {
@@ -53,6 +63,18 @@ public class Payment {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public PaymentStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(PaymentStatus status) {
+        this.status = status;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 }
 

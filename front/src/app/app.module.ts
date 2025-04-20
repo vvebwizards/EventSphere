@@ -8,14 +8,13 @@ import { LoginComponent } from './login/login.component';
 import { ResourceManagementComponent } from './resource-management/resource-management.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { HeaderComponent } from './shared/components/header/header.component';
-import { SignUpComponent } from './sign-up/sign-up.component';
 import { ResourceCardComponent } from './shared/components/resource-card/resource-card.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ReclamationsComponent } from './reclamations/reclamations.component';
-import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { EventsComponent } from './events/events.component';
-import { HttpClientModule } from '@angular/common/http';
-
+import { MyBookingsComponent } from './my-bookings/my-bookings.component';
+import { ReclamationsComponent } from './reclamations/reclamations.component';
 
 @NgModule({
   declarations: [
@@ -25,19 +24,17 @@ import { HttpClientModule } from '@angular/common/http';
     ResourceManagementComponent,
     FooterComponent,
     HeaderComponent,
-    SignUpComponent,
     ResourceCardComponent,
-    ReclamationsComponent,
-    MyBookingsComponent,
+    SignUpComponent,
     EventsComponent,
-    
+    MyBookingsComponent,
+    ReclamationsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule
-
   ],
   providers: [],
   bootstrap: [AppComponent]

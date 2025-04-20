@@ -8,13 +8,20 @@ import java.util.Optional;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
+    private final MailService mailService;
 
-    public PaymentService(PaymentRepository paymentRepository) {
+    public PaymentService(PaymentRepository paymentRepository, MailService mailService) {
         this.paymentRepository = paymentRepository;
+        this.mailService = mailService;
     }
 
     public Payment save(Payment payment) {
-        return paymentRepository.save(payment);
+        payment.setTimestamp(java.time.LocalDateTime.now());
+        Payment saved = paymentRepository.save(payment);
+
+        mailService.sendPaymentConfirmation(payment.getPayer(), payment.getPayer(), payment.getAmount());
+
+        return saved;
     }
 
     public List<Payment> getAll() {

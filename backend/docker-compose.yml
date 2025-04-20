@@ -72,7 +72,6 @@ services:
     networks:
       - eventsphere-net
 
-
   payment-management-service:
     build: ./payment-management
     image: riahiyassine/payment-management:latest
@@ -80,7 +79,7 @@ services:
       - "8088:8088"
     hostname: payment-management
     environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
     depends_on:
       - eureka_service
     networks:
