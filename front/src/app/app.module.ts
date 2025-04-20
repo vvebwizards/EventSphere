@@ -15,6 +15,9 @@ import { HttpClient, HttpClientModule, provideHttpClient, withInterceptorsFromDi
 import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,12 +31,15 @@ import { ReclamationsComponent } from './reclamations/reclamations.component';
     SignUpComponent,
     EventsComponent,
     MyBookingsComponent,
-    ReclamationsComponent
+    ReclamationsComponent,
+    ResetPasswordComponent,
+    UpdatePasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
 
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

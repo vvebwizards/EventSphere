@@ -7,7 +7,8 @@ import { ResourceManagementComponent } from './resource-management/resource-mana
 import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
-
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -16,7 +17,10 @@ const routes: Routes = [
   { path: 'resource-management', component: ResourceManagementComponent },
   { path: 'events', component: EventsComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
-  { path: 'reclamations', component: ReclamationsComponent }
+  { path: 'reclamations', component: ReclamationsComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'update-password', component: UpdatePasswordComponent },
+
 ];
 
 @NgModule({
