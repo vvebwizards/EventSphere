@@ -1,32 +1,32 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white px-5 py-2">
-  <div class="container-fluid">
-    <a class="navbar-brand fw-bold text-primary" href="#" style="padding-left: 15px;">EventSphere</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
-      <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item d-flex align-items-center ms-4">
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" href="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-calendar-event me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" href="/events" routerLinkActive="active">Events</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-journal-bookmark-fill me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" href="/my-bookings" routerLinkActive="active">My Bookings</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-exclamation-diamond me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" href="/reclamations" routerLinkActive="active">Reclamations</a>
-        </li>
-      </ul>
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold text-primary" href="#" style="padding-left: 15px;">EventSphere</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item d-flex align-items-center ms-4">
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/home" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-calendar-event me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/events" routerLinkActive="active">Events</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-journal-bookmark-fill me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-exclamation-diamond me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/reclamations" routerLinkActive="active">Reclamations</a>
+          </li>
+        </ul>
+      </div>
+      <div class="d-flex align-items-center gap-3" style="padding-right: 15px;">
+        <i class="bi bi-bag me-1"></i>
+        <a class="text-primary fw-semibold text-decoration-none login-link" routerLink="/login">Login</a>
+        <a class="btn btn-primary fw-semibold px-3 py-1 signup-btn" routerLink="signUp">Sign Up</a>
+      </div>
     </div>
-    <div class="d-flex align-items-center gap-3" style="padding-right: 15px;">
-      <i class="bi bi-bag me-1"></i>
-      <a class="text-primary fw-semibold text-decoration-none login-link" href="/login">Login</a>
-      <a class="btn btn-primary fw-semibold px-3 py-1 signup-btn" href="/signup">Sign Up</a>
-    </div>
-  </div>
-</nav>
+  </nav>

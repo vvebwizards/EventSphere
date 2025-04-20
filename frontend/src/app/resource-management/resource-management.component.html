@@ -1,0 +1,23 @@
+<p>resource-management works!</p>
+<div class="resource-management">
+    <div class="header">
+      <h2>Resource Management</h2>
+      <div class="controls">
+        <input 
+          type="text" 
+          placeholder="Search by name..." 
+       
+          (ngModelChange)="filterResources()"
+          class="search-bar">
+        <button class="add-button" (click)="onAddNewResource()">Add New Resource</button>
+      </div>
+    </div>
+    <div class="resource-grid">
+      <!-- <app-resource-card
+       
+        (viewDetails)="handleViewDetails(resource)"
+        (modify)="handleModify(resource)"
+        (delete)="handleDelete(resource)">
+      </app-resource-card> -->
+    </div>
+  </div>

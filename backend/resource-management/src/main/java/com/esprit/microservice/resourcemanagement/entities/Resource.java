@@ -28,7 +28,7 @@ public class Resource {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ResourceType type;
+        private ResourceType type;
 
     private String description;
 

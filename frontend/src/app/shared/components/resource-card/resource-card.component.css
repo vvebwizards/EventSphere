@@ -1,0 +1,62 @@
+.resource-card {
+    max-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  .resource-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+  }
+  .resource-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  h3 {
+    margin: 0;
+    font-size: 1.2em;
+  }
+  .resource-type {
+    margin: 0;
+    font-style: italic;
+    color: #666;
+  }
+  .resource-description {
+    margin: 0;
+    font-size: 0.9em;
+    color: #333;
+  }
+  .view-details {
+    padding: 8px 16px;
+    background-color: #5c8ef2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+  .view-details:hover {
+    background-color: #4a7de0;
+  }
+  .resource-actions {
+    display: flex;
+    gap: 10px;
+    align-self: flex-end;
+  }
+  .material-icons {
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .modify-icon {
+    color: #f2a65c;
+  }
+  .delete-icon {
+    color: #f25c5c;
+  }

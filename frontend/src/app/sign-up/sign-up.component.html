@@ -1,34 +1,73 @@
 <div class="signup-container">
     <h2>Create Account</h2>
-    <form>
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <div class="form-group name-group">
         <div class="name-field">
           <label for="firstName">First Name</label>
-          <input type="text" id="firstName" placeholder="Your first name"  name="firstName" required>
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            placeholder="Your first name"
+            required
+          />
+          <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched" class="error">
+            First name is required
+          </div>
         </div>
         <div class="name-field">
           <label for="lastName">Last Name</label>
-          <input type="text" id="lastName" placeholder="Your last name"  name="lastName" required>
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            placeholder="Your last name"
+            required
+          />
+          <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched" class="error">
+            Last name is required
+          </div>
         </div>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Your email address"  name="email" required>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Your email address"
+          required
+        />
+        <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error">
+          Valid email is required
+        </div>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Create a password"  name="password" required>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Create a password"
+          required
+        />
+        <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error">
+          Password is required
+        </div>
       </div>
       <div class="form-group">
         <label for="userType">Register as</label>
-        <select id="userType"  name="userType">
+        <select id="userType" formControlName="userType" required>
           <option value="regular">Regular User</option>
-          <option value="admin">Resource Owner</option>
-          <option value="admin">Event Creator</option>
-          <option value="admin">Partner</option>
+          <option value="resource_owner">Resource Owner</option>
+          <option value="event_creator">Event Creator</option>
+          <option value="partner">Partner</option>
         </select>
+        <div *ngIf="signupForm.get('userType')?.invalid && signupForm.get('userType')?.touched" class="error">
+          Role is required
+        </div>
       </div>
-      <button type="button" >Create Account</button>
+      <button type="submit" [disabled]="signupForm.invalid">Create Account</button>
     </form>
-    <p>Already have an account? <a href="/login">Login</a></p>
+    <p>Already have an account? <a routerLink="/login">Login</a></p>
   </div>
