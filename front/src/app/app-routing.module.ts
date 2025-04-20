@@ -7,6 +7,7 @@ import { ResourceManagementComponent } from './resource-management/resource-mana
 import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'resource-management', component: ResourceManagementComponent },
   { path: 'events', component: EventsComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
-  { path: 'reclamations', component: ReclamationsComponent }
+  { path: 'reclamations', component: ReclamationsComponent },
+  { path: 'profile', component: UserProfileComponent }
 ];
 
 @NgModule({

@@ -112,7 +112,7 @@
     <button type="submit" [disabled]="signupForm.invalid">Create Account</button>
 
     <!-- General Error Message -->
-    <div *ngIf="errorMessage" class="error">
+    <div *ngIf="errorMessage" class="error" style="color: red;">
       {{ errorMessage }}
     </div>
   </form>
