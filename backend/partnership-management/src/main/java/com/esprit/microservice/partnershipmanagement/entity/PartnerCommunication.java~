@@ -1,0 +1,39 @@
+package com.esprit.microservice.partnershipmanagement.entity;
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "partner_communications")
+public class PartnerCommunication {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long partnerId;
+
+    @Column(nullable = false)
+    private String subject;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String message;
+
+    private LocalDateTime communicationDate;
+
+    private String status; // e.g., SENT, PENDING
+
+    // Constructors
+    public PartnerCommunication() {
+    }
+
+    public PartnerCommunication(Long partnerId, String subject, String message, LocalDateTime communicationDate, String status) {
+        this.partnerId = partnerId;
+        this.subject = subject;
+        this.message = message;
+        this.communicationDate = communicationDate;
+        this.status = status;
+    }
+
+
+}
