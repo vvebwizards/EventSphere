@@ -1,0 +1,60 @@
+.platform-section {
+    padding: 5rem 0;
+    background-color: #f8f9fa;
+  }
+  .platform-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    font-size: 2.5rem;
+  }
+  .platform-section h4 {
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .platform-section h4::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+  }
+  .platform-section .users h4::before {
+    background-color: #007bff; 
+  }
+  .platform-section .resource-owners h4::before {
+    background-color: #28a745; 
+  }
+  .platform-section .event-creators h4::before {
+    background-color: #dc3545; 
+  }
+  .platform-section .partners h4::before {
+    background-color: #ffc107; 
+  }
+  .platform-section ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  .platform-section ul li {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+  }
+  .platform-section ul li i {
+    color: #28a745; 
+    margin-right: 0.5rem;
+  }
+  .platform-section .btn {
+    margin-top: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  .platform-section .btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
