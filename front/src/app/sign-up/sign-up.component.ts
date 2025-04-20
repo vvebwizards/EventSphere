@@ -23,17 +23,39 @@ export class SignUpComponent {
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      userType: ['', Validators.required],
-    });
+      confirmPassword: ['', Validators.required],
+      userType: ['', Validators.required]
+    }, { validators: this.passwordMatchValidator });
+    
   }
-
+  passwordMatchValidator(form: FormGroup) {
+    const password = form.get('password')?.value;
+    const confirmPassword = form.get('confirmPassword')?.value;
+    if (password !== confirmPassword) {
+      form.get('confirmPassword')?.setErrors({ mismatch: true });
+    } else {
+      form.get('confirmPassword')?.setErrors(null);
+    }
+    return null;
+  }
+  
   ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.signupForm.valid) {
       const { firstName, lastName, email, password, userType } = this.signupForm.value;
+  
+      const roleMap: { [key: string]: string } = {
+        regular: 'user',
+        resource_owner: 'resource-owner',
+        event_creator: 'event-creator',
+        partner: 'partner'
+      };
+  
+      const mappedRole = roleMap[userType];
+  
       this.authService
-        .signup({ firstName, lastName, email, password, role: userType })
+        .signup({ firstName, lastName, email, password, role: mappedRole })
         .subscribe({
           next: (response) => {
             if (response.success) {
@@ -48,4 +70,5 @@ export class SignUpComponent {
         });
     }
   }
+  
 }
