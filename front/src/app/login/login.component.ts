@@ -16,6 +16,8 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    console.log(this.email);
+    console.log(this.password);
     if (this.email && this.password) {
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
