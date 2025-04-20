@@ -6,30 +6,42 @@
     </button>
     <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
       <ul class="navbar-nav mb-2 mb-lg-0">
-        <li class="nav-item d-flex align-items-center ms-4">
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/home" routerLinkActive="active">Home</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-calendar-event me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/events" routerLinkActive="active">Events</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-journal-bookmark-fill me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
-        </li>
-        <li class="nav-item d-flex align-items-center ms-4">
-          <i class="bi bi-exclamation-diamond me-1"></i>
-          <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/reclamations" routerLinkActive="active">Reclamations</a>
-        </li>
+        <!-- Show this block ONLY if user is NOT a resource-owner -->
+        <ng-container *ngIf="userRole !== 'resource-owner'; else resourceOwnerNav">
+          <li class="nav-item d-flex align-items-center ms-4">
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/home" routerLinkActive="active">Home</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-calendar-event me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/events" routerLinkActive="active">Events</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-journal-bookmark-fill me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/my-bookings" routerLinkActive="active">My Bookings</a>
+          </li>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-exclamation-diamond me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/reclamations" routerLinkActive="active">Reclamations</a>
+          </li>
+        </ng-container>
+      
+        <!-- Show this if user is a resource-owner -->
+        <ng-template #resourceOwnerNav>
+          <li class="nav-item d-flex align-items-center ms-4">
+            <i class="bi bi-hammer me-1"></i>
+            <a class="nav-link fw-semibold pb-1 nav-link-custom" routerLink="/resource-management" routerLinkActive="active">
+              Resource Management
+            </a>
+          </li>
+        </ng-template>
       </ul>
+      
     </div>
     <div class="d-flex align-items-center gap-3" style="padding-right: 15px;">
       <i class="bi bi-bag me-1"></i>
       <ng-container *ngIf="isLoggedIn; else loggedOut">
-        <a routerLink="/profile" class="fw-semibold text-decoration-none text-dark">
-          {{ firstName }} {{ lastName }}
-        </a>
-        <button class="btn btn-danger fw-semibold ms-2" (click)="logout()">Logout</button>
+        <span class="fw-semibold">{{ firstName }} {{ lastName }}</span>
+        <button class="btn btn-danger fw-semibold" (click)="logout()">Logout</button>
       </ng-container>
       <ng-template #loggedOut>
         <a class="text-primary fw-semibold text-decoration-none login-link" routerLink="/login">Login</a>

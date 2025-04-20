@@ -11,7 +11,7 @@ export class HeaderComponent {
   isLoggedIn: boolean = false;
   firstName: string = '';
   lastName: string = '';
-
+  userRole: string = '';
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -28,6 +28,7 @@ export class HeaderComponent {
           if (userData) {
             this.firstName = userData.firstName;
             this.lastName = userData.lastName;
+            this.userRole = userData.role;
           }
         },
         (error) => {

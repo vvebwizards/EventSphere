@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Resource, ResourceService } from '../../services/resource.service';
+
 
 @Component({
   selector: 'app-resource-card',
@@ -7,33 +9,34 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrl: './resource-card.component.css'
 })
 export class ResourceCardComponent {
-  @Input() resource: { imageUrl: string, name: string, type: string, description: string } = {
-    imageUrl: '',
-    name: '',
-    type: '',
-    description: ''
-  };
-  @Output() viewDetails = new EventEmitter<void>();
-  @Output() modify = new EventEmitter<void>();
-  @Output() delete = new EventEmitter<void>();
+  @Input() resource!: Resource;
+
+  @Output() viewDetails = new EventEmitter<Resource>();
+  @Output() modify = new EventEmitter<Resource>();
+  @Output() delete = new EventEmitter<string>();
+
+  constructor(private resourceService: ResourceService) {}
 
   getTruncatedDescription(): string {
-    const maxLength = 100;
-    if (this.resource.description.length > maxLength) {
-      return this.resource.description.slice(0, maxLength) + '...';
-    }
-    return this.resource.description;
+    return this.resource.description?.length > 100
+      ? this.resource.description.slice(0, 100) + '...'
+      : this.resource.description;
   }
 
-  onViewDetails() {
-    this.viewDetails.emit();
+  onViewDetails(): void {
+  
+    this.resourceService.getResourceById(this.resource.id).subscribe((fullResource) => {
+      this.viewDetails.emit(fullResource);
+    });
   }
 
-  onModify() {
-    this.modify.emit();
+  onModify(): void {
+    this.resourceService.getResourceById(this.resource.id).subscribe((fullResource) => {
+      this.modify.emit(fullResource);
+    });
   }
 
-  onDelete() {
-    this.delete.emit();
+  onDelete(): void {
+    this.delete.emit(this.resource.id);
   }
 }
