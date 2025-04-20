@@ -64,7 +64,7 @@ services:
     hostname: event-management-service
     environment:
       - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/eventdb
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka_service:9000/eureka
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
       - SERVER_PORT=8085
     depends_on:
       - eureka_service
@@ -125,7 +125,36 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - eventsphere-net
+  mysql-partnership:
+    image: mysql
+    container_name: mysql-partnership
+    environment:
+      - MYSQL_DATABASE=partnership-management
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3307:3306"  
+    volumes:
+      - mysql-partnership-data:/var/lib/mysql
+    networks:
+      - eventsphere-net
 
+  partnership-management:
+      build: ./partnership-management
+      image: soufienaessalah/partnership-management:latest
+      ports:
+        - "8083:8083"
+      hostname: partnership-management
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:mysql://mysql-partnership:3306/partnership-management
+        - SPRING_DATASOURCE_USERNAME=root
+        - SPRING_DATASOURCE_PASSWORD=root
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://discovery-service:9000/eureka/
+        - SERVER_PORT=8083
+      depends_on:
+        - eureka_service
+        - mysql-partnership
+      networks:
+        - eventsphere-net
 networks:
   eventsphere-net:
     driver: bridge
@@ -134,3 +163,4 @@ volumes:
   postgres-data:
   mysql-data:
   mongo-data:
+  mysql-partnership-data:
