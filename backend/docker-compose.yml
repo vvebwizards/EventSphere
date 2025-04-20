@@ -125,6 +125,7 @@ services:
       - mysql-data:/var/lib/mysql
     networks:
       - eventsphere-net
+
   mysql-partnership:
     image: mysql
     container_name: mysql-partnership
