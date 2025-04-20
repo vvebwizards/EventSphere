@@ -1,73 +1,121 @@
 <div class="signup-container">
-    <h2>Create Account</h2>
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-      <div class="form-group name-group">
-        <div class="name-field">
-          <label for="firstName">First Name</label>
-          <input
-            type="text"
-            id="firstName"
-            formControlName="firstName"
-            placeholder="Your first name"
-            required
-          />
-          <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched" class="error">
-            First name is required
-          </div>
-        </div>
-        <div class="name-field">
-          <label for="lastName">Last Name</label>
-          <input
-            type="text"
-            id="lastName"
-            formControlName="lastName"
-            placeholder="Your last name"
-            required
-          />
-          <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched" class="error">
-            Last name is required
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
+  <h2>Create Account</h2>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+    
+    <!-- Name Fields -->
+    <div class="form-group name-group">
+      <div class="name-field">
+        <label for="firstName">First Name</label>
         <input
-          type="email"
-          id="email"
-          formControlName="email"
-          placeholder="Your email address"
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          placeholder="Your first name"
           required
         />
-        <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error">
-          Valid email is required
+        <div *ngIf="signupForm.get('firstName')?.invalid && signupForm.get('firstName')?.touched" class="error">
+          First name is required
         </div>
       </div>
-      <div class="form-group">
-        <label for="password">Password</label>
+
+      <div class="name-field">
+        <label for="lastName">Last Name</label>
         <input
-          type="password"
-          id="password"
-          formControlName="password"
-          placeholder="Create a password"
+          type="text"
+          id="lastName"
+          formControlName="lastName"
+          placeholder="Your last name"
           required
         />
-        <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error">
+        <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched" class="error">
+          Last name is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Field -->
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        formControlName="email"
+        placeholder="Your email address"
+        required
+      />
+      <div *ngIf="signupForm.get('email')?.touched">
+        <div *ngIf="signupForm.get('email')?.hasError('required')" class="error">
+          Email is required
+        </div>
+        <div *ngIf="signupForm.get('email')?.hasError('email')" class="error">
+          Enter a valid email address
+        </div>
+      </div>
+    </div>
+
+    <!-- Password Field -->
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        placeholder="Create a password"
+        required
+      />
+      <div *ngIf="signupForm.get('password')?.touched">
+        <div *ngIf="signupForm.get('password')?.hasError('required')" class="error">
           Password is required
         </div>
-      </div>
-      <div class="form-group">
-        <label for="userType">Register as</label>
-        <select id="userType" formControlName="userType" required>
-          <option value="regular">Regular User</option>
-          <option value="resource_owner">Resource Owner</option>
-          <option value="event_creator">Event Creator</option>
-          <option value="partner">Partner</option>
-        </select>
-        <div *ngIf="signupForm.get('userType')?.invalid && signupForm.get('userType')?.touched" class="error">
-          Role is required
+        <div *ngIf="signupForm.get('password')?.hasError('minlength')" class="error" style="color: red;">
+          Password must be at least 6 characters
         </div>
       </div>
-      <button type="submit" [disabled]="signupForm.invalid">Create Account</button>
-    </form>
-    <p>Already have an account? <a routerLink="/login">Login</a></p>
-  </div>
+    </div>
+
+    <!-- Confirm Password Field -->
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input
+        type="password"
+        id="confirmPassword"
+        formControlName="confirmPassword"
+        placeholder="Confirm your password"
+        required
+      />
+      <div *ngIf="signupForm.get('confirmPassword')?.touched">
+        <div *ngIf="signupForm.get('confirmPassword')?.hasError('required')" class="error" style="color: red;">
+          Confirm password is required
+        </div>
+        <div *ngIf="signupForm.get('confirmPassword')?.hasError('mismatch')" class="error" style="color: red;">
+          Passwords do not match
+        </div>
+      </div>
+    </div>
+
+    <!-- Role Selection -->
+    <div class="form-group">
+      <label for="userType">Register as</label>
+      <select id="userType" formControlName="userType" required>
+        <option value="" disabled selected>Select a role</option>
+        <option value="regular">Regular User</option>
+        <option value="resource_owner">Resource Owner</option>
+        <option value="event_creator">Event Creator</option>
+        <option value="partner">Partner</option>
+      </select>
+      <div *ngIf="signupForm.get('userType')?.invalid && signupForm.get('userType')?.touched" class="error">
+        Role is required
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="signupForm.invalid">Create Account</button>
+
+    <!-- General Error Message -->
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  </form>
+
+  <p>Already have an account? <a routerLink="/login">Login</a></p>
+</div>

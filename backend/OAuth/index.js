@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
@@ -40,6 +41,7 @@ app.use(session({
 }));
 
 app.use(keycloak.middleware());
+app.use(cors());
 app.use(cookieParser());
 app.use('/user', userRoutes);
 app.use('/', authRoutes);
