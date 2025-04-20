@@ -19,7 +19,7 @@ const signUp = async (req, res) => {
     if (existing.length > 0) {
       return res.status(409).json({
         success: false,
-        message: 'Cet utilisateur existe déjà dans Keycloak',
+        message: 'A user with this email already exists',
       });
     }
 
