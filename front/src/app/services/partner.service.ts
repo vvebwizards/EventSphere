@@ -32,10 +32,13 @@ export class PartnerService {
     if (status) params = params.set('status', status);
     return this.http.get<Partner[]>(`${this.base}/search`, { params });
   }
-  stats(): Observable<{[status: string]: number}> {
-    return this.http.get<{[status: string]: number}>(`${this.base}/statistics`);
-  }
+
   getById(id: number): Observable<Partner> {
     return this.http.get<Partner>(`${this.base}/${id}`);
+  }
+  getStatistics(): Observable<{ [status: string]: number }> {
+    return this.http.get<{ [status: string]: number }>(
+      `${this.base}/statistics`
+    );
   }
 }

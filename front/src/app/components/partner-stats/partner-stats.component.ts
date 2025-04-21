@@ -1,28 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { PartnerService } from '../../services/partner.service';
+import { CommonModule }     from '@angular/common';
+import { PartnerService }   from '../../services/partner.service';
 
 @Component({
   selector: 'app-partner-stats',
-  template: `
-    <h2>Partner Statistics</h2>
-    <ul>
-      <li *ngFor="let key of keys">
-        {{key}}: {{stats[key]}}
-      </li>
-    </ul>
-    <button routerLink="/partners">← Back</button>
-  `
+  standalone: true,
+  imports: [ CommonModule ],
+  templateUrl: './partner-stats.component.html'
 })
 export class PartnerStatsComponent implements OnInit {
-  stats: { [status: string]: number } = {};
-  keys: string[] = [];
+  stats: { status: string; count: number }[] = [];
 
   constructor(private svc: PartnerService) {}
 
   ngOnInit() {
-    this.svc.stats().subscribe(data => {
-      this.stats = data;
-      this.keys = Object.keys(data);
+    this.svc.getStatistics().subscribe(data => {
+      // transform { ACTIVE: 3, INACTIVE: 2 } → [ {status:'ACTIVE',count:3}, ... ]
+      this.stats = Object.entries(data).map(([status, count]) => ({ status, count }));
     });
   }
 }
