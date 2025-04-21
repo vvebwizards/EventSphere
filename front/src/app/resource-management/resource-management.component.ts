@@ -1,59 +1,125 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
+import { ResourceService, Resource } from '../shared/services/resource.service';
 
 @Component({
   selector: 'app-resource-management',
   standalone: false,
   templateUrl: './resource-management.component.html',
-  styleUrl: './resource-management.component.css'
+  styleUrls: ['./resource-management.component.css']
 })
 export class ResourceManagementComponent {
-  @Output() addNewResource = new EventEmitter<void>();
+  resources: Resource[] = [];
+  filteredResources: Resource[] = [];
   searchTerm: string = '';
+  showAddModal: boolean = false;
+  isEditMode: boolean = false;
+  selectedResource: Resource | null = null;
 
-  resources = [
-    {
-      imageUrl: 'https://via.placeholder.com/300x150',
-      name: 'Resource 1',
-      type: 'Document',
-      description: 'This is a detailed description of Resource 1 that might be quite long and needs truncation if it exceeds the character limit.'
-    },
-    {
-      imageUrl: 'https://via.placeholder.com/300x150',
-      name: 'Resource 2',
-      type: 'Video',
-      description: 'A short description for Resource 2.'
-    },
-    {
-      imageUrl: 'https://via.placeholder.com/300x150',
-      name: 'Resource 3',
-      type: 'Image',
-      description: 'This is Resource 3 with a medium-length description that fits well.'
+  constructor(private resourceService: ResourceService) {}
+
+  ngOnInit(): void {
+    this.loadResources();
+  }
+
+  loadResources(): void {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      this.resourceService.getMyResources(token).subscribe({
+        next: (data) => {
+          this.resources = data;
+          this.filteredResources = data;
+        },
+        error: (err) => {
+          console.error('Error loading resources:', err);
+          alert('Failed to load resources.');
+        }
+      });
+    } else {
+      console.warn('No access token found!');
+      alert('Please log in to view resources.');
     }
-  ];
+  }
 
-  filteredResources = [...this.resources];
-
-  filterResources() {
-    this.filteredResources = this.resources.filter(resource =>
-      resource.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+  filterResources(): void {
+    const term = this.searchTerm.trim().toLowerCase();
+    this.filteredResources = this.resources.filter((resource) =>
+      resource.name.toLowerCase().includes(term)
     );
   }
 
-  onAddNewResource() {
-    this.addNewResource.emit();
+  onAddNewResource(): void {
+    this.isEditMode = false;
+    this.selectedResource = null;
+    this.showAddModal = true;
   }
 
-  handleViewDetails(resource: any) {
-    console.log('View details for:', resource.name);
+  onModifyResource(resource: Resource): void {
+    console.log('Modify event received for resource:', resource.id);
+    this.isEditMode = true;
+    this.selectedResource = { ...resource };
+    this.showAddModal = true;
   }
 
-  handleModify(resource: any) {
-    console.log('Modify:', resource.name);
+  onDeleteResource(resourceId: string): void {
+    console.log('Delete event received for resource:', resourceId);
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      this.resourceService.deleteResource(resourceId, token).subscribe({
+        next: () => {
+          this.resources = this.resources.filter((r) => r.id !== resourceId);
+          this.filteredResources = [...this.resources];
+          alert('Resource deleted successfully!');
+        },
+        error: (err) => {
+          console.error('Error deleting resource:', err);
+          alert('Failed to delete resource.');
+        }
+      });
+    } else {
+      console.warn('No access token found!');
+      alert('You must be logged in to delete a resource.');
+    }
   }
 
-  handleDelete(resource: any) {
-    console.log('Delete:', resource.name);
-    this.resources = this.resources.filter(r => r !== resource);
-    this.filterResources();
+  closeAddModal(): void {
+    this.showAddModal = false;
+    this.isEditMode = false;
+    this.selectedResource = null;
+  }
+
+  saveNewResource(resource: Resource): void {
+    const token = localStorage.getItem('accessToken') || '';
+    if (this.isEditMode && this.selectedResource) {
+      this.resourceService.updateResource(this.selectedResource.id, resource, token).subscribe({
+        next: (updatedResource) => {
+          const index = this.resources.findIndex((r) => r.id === updatedResource.id);
+          if (index !== -1) {
+            this.resources[index] = updatedResource;
+            this.filteredResources = [...this.resources];
+          }
+          this.showAddModal = false;
+          this.isEditMode = false;
+          this.selectedResource = null;
+          alert('Resource updated successfully!');
+        },
+        error: (err) => {
+          console.error('Error updating resource:', err);
+          alert('Failed to update resource.');
+        }
+      });
+    } else {
+      this.resourceService.createResource(resource, token).subscribe({
+        next: (newResource) => {
+          this.resources.push(newResource);
+          this.filteredResources = [...this.resources];
+          this.showAddModal = false;
+          alert('Resource created successfully!');
+        },
+        error: (err) => {
+          console.error('Error creating resource:', err);
+          alert('Failed to create resource.');
+        }
+      });
+    }
   }
 }

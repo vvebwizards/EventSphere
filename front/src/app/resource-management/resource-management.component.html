@@ -1,22 +1,31 @@
 <div class="resource-management">
-    <div class="header">
-      <h2>Resource Management</h2>
-      <div class="controls">
-        <input 
-          type="text" 
-          placeholder="Search by name..." 
-       
-          (ngModelChange)="filterResources()"
-          class="search-bar">
-        <button class="add-button" (click)="onAddNewResource()">Add New Resource</button>
-      </div>
-    </div>
-    <div class="resource-grid">
-      <!-- <app-resource-card
-       
-        (viewDetails)="handleViewDetails(resource)"
-        (modify)="handleModify(resource)"
-        (delete)="handleDelete(resource)">
-      </app-resource-card> -->
+  <div class="header">
+    <h2>Resource Management</h2>
+    <div class="controls">
+      <input 
+        type="text" 
+        placeholder="Search for a resource..." 
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="filterResources()"
+        class="search-bar">
+      <button class="add-button" (click)="onAddNewResource()">Add New Resource</button>
     </div>
   </div>
+  <div class="resource-grid">
+    <app-resource-card
+      *ngFor="let resource of filteredResources"
+      [resource]="resource"
+      (delete)="onDeleteResource($event)"
+      (modify)="onModifyResource($event)">
+    </app-resource-card>
+  </div>
+</div>
+
+<app-add-resource-modal
+  *ngIf="showAddModal"
+  [resource]="selectedResource"
+  [isEditMode]="isEditMode"
+  (close)="closeAddModal()"
+  (save)="saveNewResource($event)">
+</app-add-resource-modal>
+
