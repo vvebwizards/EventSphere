@@ -22,6 +22,7 @@ export class LoginComponent {
           if (response.success) {
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
+            this.authService.setLoginStatus(true); 
             this.router.navigate(['/profile']);
           } else {
             this.errorMessage = response.message;
@@ -35,4 +36,6 @@ export class LoginComponent {
       this.errorMessage = 'Please fill in both fields';
     }
   }
+  
+
 }
