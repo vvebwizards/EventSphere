@@ -1,0 +1,30 @@
+<!-- src/app/components/partner-list/partner-list.component.html -->
+<div>
+    <h2>Partners</h2>
+    <button routerLink="/partners/new">New Partner</button>
+    <label>Name: <input [(ngModel)]="filterName" (ngModelChange)="load()" /></label>
+    <label>Status:
+      <select [(ngModel)]="filterStatus" (ngModelChange)="load()">
+        <option value="">Any</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+      </select>
+    </label>
+    <table>
+      <thead>
+        <tr><th>Name</th><th>Email</th><th>Status</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of partners">
+          <td>{{p.name}}</td>
+          <td>{{p.email}}</td>
+          <td>{{p.status}}</td>
+          <td>
+            <a [routerLink]="['/partners', p.id]">Edit</a>
+            <button (click)="delete(p.id!)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

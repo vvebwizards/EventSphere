@@ -1,0 +1,19 @@
+<div>
+    <h2>{{partner.id ? 'Edit' : 'New'}} Partner</h2>
+    <form (ngSubmit)="save()">
+      <label>Name: <input [(ngModel)]="partner.name" name="name" required></label><br>
+      <label>Email: <input [(ngModel)]="partner.email" name="email" required></label><br>
+      <label>Phone: <input [(ngModel)]="partner.phoneNumber" name="phone"></label><br>
+      <label>Address: <input [(ngModel)]="partner.address" name="address"></label><br>
+      <label>Website: <input [(ngModel)]="partner.website" name="website"></label><br>
+      <label>Status:
+        <select [(ngModel)]="partner.status" name="status">
+          <option>ACTIVE</option>
+          <option>INACTIVE</option>
+        </select>
+      </label><br>
+      <button type="submit">Save</button>
+      <button type="button" routerLink="/partners">Cancel</button>
+    </form>
+  </div>
+  
