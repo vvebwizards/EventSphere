@@ -11,6 +11,8 @@ import com.esprit.microservice.resourcemanagement.entities.ResourceType;
 import com.esprit.microservice.resourcemanagement.entities.RessourceBooking;
 import com.esprit.microservice.resourcemanagement.repositories.ResourceRepository;
 import com.esprit.microservice.resourcemanagement.repositories.RessourceBookingRepository;
+
+import com.esprit.microservice.resourcemanagement.uploads.FileUploadUtil;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +23,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -68,7 +76,7 @@ public class ResourceService implements IResourceService {
     //add the resource by owner id
     @Override
     @Transactional
-    public Resource createResource(Resource resource) {
+    public Resource createResource(Resource resource, MultipartFile imageFile) {
         ResponseEntity<UserDTO> userResponse = userClient.getUserById();
         UserDTO currentUser = userResponse.getBody();
 
@@ -78,8 +86,21 @@ public class ResourceService implements IResourceService {
 
         resource.setOwnerId(currentUser.getId());
 
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+                FileUploadUtil.saveFile(fileName, imageFile.getBytes());
+
+                resource.setImagePath("http://localhost:8087/resource-api/resources/images/"+ fileName); // Set the path to the database
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
+
         return resourceRepository.save(resource);
     }
+
+
     //only the resource owner can update the resource
     @Override
     public Resource updateResource(UUID id, Resource resourceDetails) {

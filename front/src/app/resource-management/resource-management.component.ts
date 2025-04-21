@@ -14,7 +14,7 @@ export class ResourceManagementComponent {
   showAddModal: boolean = false;
   isEditMode: boolean = false;
   selectedResource: Resource | null = null;
-
+  selectedFile: File | null = null;
   constructor(private resourceService: ResourceService) {}
 
   ngOnInit(): void {
@@ -90,7 +90,12 @@ export class ResourceManagementComponent {
   saveNewResource(resource: Resource): void {
     const token = localStorage.getItem('accessToken') || '';
     if (this.isEditMode && this.selectedResource) {
-      this.resourceService.updateResource(this.selectedResource.id, resource, token).subscribe({
+      this.resourceService.updateResource(
+        this.selectedResource.id, 
+        resource, 
+        this.selectedFile, 
+        token
+      ).subscribe({
         next: (updatedResource) => {
           const index = this.resources.findIndex((r) => r.id === updatedResource.id);
           if (index !== -1) {
@@ -100,6 +105,7 @@ export class ResourceManagementComponent {
           this.showAddModal = false;
           this.isEditMode = false;
           this.selectedResource = null;
+          this.selectedFile = null;
           alert('Resource updated successfully!');
         },
         error: (err) => {
@@ -108,11 +114,16 @@ export class ResourceManagementComponent {
         }
       });
     } else {
-      this.resourceService.createResource(resource, token).subscribe({
+      this.resourceService.createResource(
+        resource, 
+        this.selectedFile, 
+        token
+      ).subscribe({
         next: (newResource) => {
           this.resources.push(newResource);
           this.filteredResources = [...this.resources];
           this.showAddModal = false;
+          this.selectedFile = null;
           alert('Resource created successfully!');
         },
         error: (err) => {
@@ -121,5 +132,9 @@ export class ResourceManagementComponent {
         }
       });
     }
+  }
+  handleSave(event: {resource: Resource, file: File | null}): void {
+    this.selectedFile = event.file;
+    this.saveNewResource(event.resource);
   }
 }

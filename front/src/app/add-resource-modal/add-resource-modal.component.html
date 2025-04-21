@@ -1,43 +1,50 @@
 <div class="modal-overlay">
-    <div class="modal-content">
-      <h3>{{ isEditMode ? 'Edit Resource' : 'Add New Resource' }}</h3>
-      <form (ngSubmit)="onSave()">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" [(ngModel)]="newResource.name" name="name" required>
+  <div class="modal-content">
+    <h3>{{ isEditMode ? 'Edit Resource' : 'Add New Resource' }}</h3>
+    <form (ngSubmit)="onSave()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" [(ngModel)]="newResource.name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="type">Type</label>
+        <select id="type" [(ngModel)]="newResource.type" name="type" required>
+          <option value="" disabled selected>Select a type</option>
+          <option value="VENUE">Venue</option>
+          <option value="EQUIPMENT">Equipment</option>
+          <option value="CATERING">Catering</option>
+          <option value="PERSONNEL">Personnel</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea id="description" [(ngModel)]="newResource.description" name="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="image">Image</label>
+        <input type="file" id="image" name="image" (change)="onFileSelected($event)" accept="image/*">
+        <div *ngIf="isEditMode && newResource.imagePath" class="current-image">
+          Current Image: <a [href]="newResource.imagePath" target="_blank">View</a>
         </div>
-        <div class="form-group">
-          <label for="type">Type</label>
-          <select id="type" [(ngModel)]="newResource.type" name="type" required>
-            <option value="" disabled selected>Select a type</option>
-            <option value="VENUE">Venue</option>
-            <option value="EQUIPMENT">Equipment</option>
-            <option value="CATERING">Catering</option>
-            <option value="PERSONNEL">Personnel</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea id="description" [(ngModel)]="newResource.description" name="description" required></textarea>
-        </div>
-        <div class="form-group">
-          <label for="available">Available</label>
-          <input type="checkbox" id="available" [(ngModel)]="newResource.available" name="available">
-        </div>
-        <div class="form-group">
-          <label for="costPerHour">Cost Per Hour</label>
-          <input type="number" id="costPerHour" [(ngModel)]="newResource.costPerHour" name="costPerHour" required min="0">
-        </div>
-        <div class="form-group">
-          <label for="location">Location</label>
-          <input type="text" id="location" [(ngModel)]="newResource.location" name="location" required>
-        </div>
-        <div class="modal-actions">
-          <button type="button" (click)="onClose()">Cancel</button>
-          <button type="submit" [disabled]="!newResource.name || !newResource.type || !newResource.description || !newResource.location || newResource.costPerHour < 0">
-            {{ isEditMode ? 'Update' : 'Save' }}
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="form-group">
+        <label for="available">Available</label>
+        <input type="checkbox" id="available" [(ngModel)]="newResource.available" name="available">
+      </div>
+      <div class="form-group">
+        <label for="costPerHour">Cost Per Hour</label>
+        <input type="number" id="costPerHour" [(ngModel)]="newResource.costPerHour" name="costPerHour" required min="0">
+      </div>
+      <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" [(ngModel)]="newResource.location" name="location" required>
+      </div>
+      <div class="modal-actions">
+        <button type="button" (click)="onClose()">Cancel</button>
+        <button type="submit" [disabled]="!newResource.name || !newResource.type || !newResource.description || !newResource.location || newResource.costPerHour < 0">
+          {{ isEditMode ? 'Update' : 'Save' }}
+        </button>
+      </div>
+    </form>
   </div>
+</div>
