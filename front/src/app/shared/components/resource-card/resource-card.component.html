@@ -1,13 +1,25 @@
 <div class="resource-card">
-  <img src="https://media-api.xogrp.com/images/a5ab8a8f-071d-49b8-a9d0-46e22c1a9ab3~rs_768.h" alt="{{resource.name}}" class="resource-image">
+  <img src="https://media-api.xogrp.com/images/a5ab8a8f-071d-49b8-a9d0-46e22c1a9ab3~rs_768.h"
+       alt="{{ resource.name }}"
+       class="resource-image">
+  
   <div class="resource-content">
-    <h3>{{resource.name}}</h3>
-    <p class="resource-type">{{resource.type}}</p>
-    <p class="resource-description">{{getTruncatedDescription()}}</p>
-    <button class="view-details">View Details</button>
+    <h3>{{ resource.name }}</h3>
+    <p class="resource-type">{{ resource.type }}</p>
+    <p class="resource-description">{{ getTruncatedDescription() }}</p>
+    
+    <button class="view-details" (click)="onViewDetails()">View Details</button>
+    
     <div class="resource-actions">
-      <span class="material-icons modify-icon" >edit</span>
-      <span class="material-icons delete-icon" >delete</span>
+      <span class="material-icons modify-icon" (click)="onModify()">edit</span>
+      <span class="material-icons delete-icon" (click)="openDeleteModal()">delete</span>
     </div>
+  </div>
+</div>
+<div class="modal-backdrop" *ngIf="showDeleteModal">
+  <div class="modal">
+    <p>Are you sure you want to delete <strong>{{resource.name}}</strong>?</p>
+    <button (click)="confirmDelete()">Yes</button>
+    <button (click)="closeDeleteModal()">No</button>
   </div>
 </div>

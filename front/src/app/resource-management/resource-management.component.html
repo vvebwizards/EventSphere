@@ -15,14 +15,16 @@
     <app-resource-card
       *ngFor="let resource of filteredResources"
       [resource]="resource"
-      
-    >
+      (delete)="onDeleteResource($event)"
+      (modify)="onModifyResource($event)">
     </app-resource-card>
   </div>
 </div>
 
 <app-add-resource-modal
   *ngIf="showAddModal"
+  [resource]="selectedResource"
+  [isEditMode]="isEditMode"
   (close)="closeAddModal()"
   (save)="saveNewResource($event)">
 </app-add-resource-modal>

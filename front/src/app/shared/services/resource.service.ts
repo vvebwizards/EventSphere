@@ -35,13 +35,22 @@ export class ResourceService {
     return this.http.delete<void>(`${this.baseUrl}/Delete/${id}`, { headers });
   }
   
-  getResourceById(id: string): Observable<Resource> {
-    return this.http.get<Resource>(`${this.baseUrl}/getOne/${id}`);
+  getResourceById(id: string, token: string): Observable<Resource> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.get<Resource>(`${this.baseUrl}/getOne/${id}`,{ headers });
   }
 
-  updateResource(id: string, resource: Resource): Observable<Resource> {
-    return this.http.put<Resource>(`${this.baseUrl}/updateOne/${id}`, resource);
+  updateResource(id: string, resource: Resource, token: string): Observable<Resource> {
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    });
+    return this.http.put<Resource>(`${this.baseUrl}/updateOne/${id}`, resource, { headers });
   }
+  
   createResource(resource: Resource, token: string): Observable<Resource> {
     if (!token) {
       throw new Error('Token is required for authentication');

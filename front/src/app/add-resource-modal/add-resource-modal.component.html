@@ -1,6 +1,6 @@
 <div class="modal-overlay">
     <div class="modal-content">
-      <h3>Add New Resource</h3>
+      <h3>{{ isEditMode ? 'Edit Resource' : 'Add New Resource' }}</h3>
       <form (ngSubmit)="onSave()">
         <div class="form-group">
           <label for="name">Name</label>
@@ -34,7 +34,9 @@
         </div>
         <div class="modal-actions">
           <button type="button" (click)="onClose()">Cancel</button>
-          <button type="submit" [disabled]="!newResource.name || !newResource.type || !newResource.description || !newResource.location || newResource.costPerHour < 0">Save</button>
+          <button type="submit" [disabled]="!newResource.name || !newResource.type || !newResource.description || !newResource.location || newResource.costPerHour < 0">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
         </div>
       </form>
     </div>

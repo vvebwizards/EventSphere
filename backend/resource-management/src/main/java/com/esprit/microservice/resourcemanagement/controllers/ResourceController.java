@@ -54,7 +54,7 @@ public class ResourceController {
     }
 
     @GetMapping("/getOne/{id}")
-    @RolesAllowed("user")
+    @RolesAllowed("resource-owner")
     public ResponseEntity<Resource> getResourceById(@PathVariable UUID id) {
         return ResponseEntity.ok(resourceService.getResourceById(id));
     }
