@@ -12,7 +12,7 @@ export class ResourceCardComponent {
   @Output() viewDetails = new EventEmitter<Resource>();
   @Output() modify = new EventEmitter<Resource>();
   @Output() delete = new EventEmitter<string>();
-  showDeleteModal = false;
+ 
 
   constructor(
     private resourceService: ResourceService,
@@ -57,21 +57,7 @@ export class ResourceCardComponent {
     }
   }
 
-  openDeleteModal(): void {
-    console.log('Opening delete modal for resource:', this.resource.id);
-    this.showDeleteModal = true;
-    this.cdr.detectChanges();
-  }
+ 
 
-  closeDeleteModal(): void {
-    console.log('Closing delete modal');
-    this.showDeleteModal = false;
-    this.cdr.detectChanges();
-  }
-
-  confirmDelete(): void {
-    console.log('Confirming delete for resource:', this.resource.id);
-    this.delete.emit(this.resource.id);
-    this.closeDeleteModal();
-  }
+  
 }

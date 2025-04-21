@@ -12,14 +12,7 @@
     
     <div class="resource-actions">
       <span class="material-icons modify-icon" (click)="onModify()">edit</span>
-      <span class="material-icons delete-icon" (click)="openDeleteModal()">delete</span>
+      <span class="material-icons delete-icon" (click)="delete.emit(resource.id)">delete</span>
     </div>
-  </div>
-</div>
-<div class="modal-backdrop" *ngIf="showDeleteModal">
-  <div class="modal">
-    <p>Are you sure you want to delete <strong>{{resource.name}}</strong>?</p>
-    <button (click)="confirmDelete()">Yes</button>
-    <button (click)="closeDeleteModal()">No</button>
   </div>
 </div>
