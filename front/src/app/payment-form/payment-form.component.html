@@ -1,0 +1,146 @@
+<div class="payment-container">
+  <div class="payment-card slide-up">
+    <!-- Payment Form Header -->
+    <div class="payment-header">
+      <h1>Payment Form</h1>
+      <app-progress-bar [progress]="formProgress"></app-progress-bar>
+    </div>
+
+    <!-- Success Message (Shows after successful payment) -->
+    <div *ngIf="paymentSuccess" class="success-message fade-in">
+      <div class="success-icon">✓</div>
+      <h2>Payment Successful!</h2>
+      <p>Your payment has been processed successfully.</p>
+      <p class="transaction-id">Transaction ID: {{ transactionId }}</p>
+      <app-button 
+        [label]="'Make Another Payment'" 
+        [type]="'secondary'"
+        (click)="resetForm()"
+      ></app-button>
+    </div>
+
+    <!-- Payment Form -->
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" *ngIf="!paymentSuccess">
+      <!-- Payer Email -->
+      <app-form-field 
+        [label]="'Payer Email'" 
+        [required]="true" 
+        [error]="paymentForm.get('payer')?.invalid && paymentForm.get('payer')?.touched ? 'Please enter a valid email address' : null"
+      >
+        <input 
+          type="email" 
+          formControlName="payer" 
+          placeholder="email@example.com"
+          [class.invalid]="paymentForm.get('payer')?.invalid && paymentForm.get('payer')?.touched"
+        />
+      </app-form-field>
+      
+      <!-- Payment Amount -->
+      <app-form-field 
+        [label]="'Amount (USD)'" 
+        [required]="true"
+        [error]="paymentForm.get('amount')?.invalid && paymentForm.get('amount')?.touched ? 'Please enter a valid amount' : null"
+      >
+        <div class="amount-input">
+          <span class="currency-symbol">$</span>
+          <input 
+            type="number" 
+            formControlName="amount" 
+            placeholder="0.00" 
+            step="0.01"
+            min="0.01"
+            [class.invalid]="paymentForm.get('amount')?.invalid && paymentForm.get('amount')?.touched"
+          />
+        </div>
+      </app-form-field>
+      
+      <!-- Payment Method -->
+      <app-form-field 
+        [label]="'Payment Method'" 
+        [required]="true"
+      >
+        <select formControlName="method">
+          <option value="Credit Card">Credit Card</option>
+          <option value="Debit Card">Debit Card</option>
+        </select>
+      </app-form-field>
+      
+      <!-- Card Details Section -->
+      <div class="card-details" formGroupName="cardInfo">
+        <h3>Card Details</h3>
+        
+        <!-- Card Number -->
+        <app-form-field 
+          [label]="'Card Number'" 
+          [required]="true"
+          [error]="paymentForm.get('cardInfo.cardNumber')?.invalid && paymentForm.get('cardInfo.cardNumber')?.touched ? 'Please enter a valid card number' : null"
+        >
+          <input 
+            type="text" 
+            formControlName="cardNumber" 
+            placeholder="1234 5678 9012 3456"
+            (input)="onCardNumberInput($event)"
+            [class.invalid]="paymentForm.get('cardInfo.cardNumber')?.invalid && paymentForm.get('cardInfo.cardNumber')?.touched"
+          />
+        </app-form-field>
+        
+        <!-- Cardholder Name -->
+        <app-form-field 
+          [label]="'Cardholder Name'" 
+          [required]="true"
+          [error]="paymentForm.get('cardInfo.cardholderName')?.invalid && paymentForm.get('cardInfo.cardholderName')?.touched ? 'Please enter the cardholder name' : null"
+        >
+          <input 
+            type="text" 
+            formControlName="cardholderName" 
+            placeholder="John Doe"
+            [class.invalid]="paymentForm.get('cardInfo.cardholderName')?.invalid && paymentForm.get('cardInfo.cardholderName')?.touched"
+          />
+        </app-form-field>
+        
+        <!-- Card Expiry and CVV (Displayed in a row) -->
+        <div class="expiry-cvv-row">
+          <!-- Expiry Date -->
+          <app-form-field 
+            [label]="'Expiry Date'" 
+            [required]="true"
+            [error]="paymentForm.get('cardInfo.expiryDate')?.invalid && paymentForm.get('cardInfo.expiryDate')?.touched ? 'Enter as MM/YY' : null"
+          >
+            <input 
+              type="text" 
+              formControlName="expiryDate" 
+              placeholder="MM/YY"
+              (input)="onExpiryDateInput($event)"
+              [class.invalid]="paymentForm.get('cardInfo.expiryDate')?.invalid && paymentForm.get('cardInfo.expiryDate')?.touched"
+            />
+          </app-form-field>
+          
+          <!-- CVV -->
+          <app-form-field 
+            [label]="'CVV'" 
+            [required]="true"
+            [error]="paymentForm.get('cardInfo.cvv')?.invalid && paymentForm.get('cardInfo.cvv')?.touched ? '3-4 digits' : null"
+          >
+            <input 
+              type="text" 
+              formControlName="cvv" 
+              placeholder="123"
+              (input)="onCvvInput($event)"
+              [class.invalid]="paymentForm.get('cardInfo.cvv')?.invalid && paymentForm.get('cardInfo.cvv')?.touched"
+            />
+          </app-form-field>
+        </div>
+      </div>
+      
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <app-button 
+          [label]="isSubmitting ? 'Processing...' : 'Pay Now'" 
+          [type]="'primary'" 
+          [disabled]="isSubmitting || paymentForm.invalid"
+          [showSpinner]="isSubmitting"
+        ></app-button>
+      </div>
+    </form>
+  </div>
+</div>

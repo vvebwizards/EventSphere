@@ -1,0 +1,131 @@
+.payment-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-4);
+}
+
+.payment-card {
+  background-color: white;
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 500px;
+  padding: var(--spacing-6);
+  margin: var(--spacing-4) 0;
+}
+
+.payment-header {
+  margin-bottom: var(--spacing-5);
+  text-align: center;
+}
+
+.payment-header h1 {
+  margin-bottom: var(--spacing-3);
+  color: var(--neutral-900);
+  font-weight: 700;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.card-details {
+  background-color: var(--neutral-100);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-4);
+  margin-top: var(--spacing-2);
+}
+
+.card-details h3 {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-3);
+  color: var(--neutral-800);
+}
+
+.expiry-cvv-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+.form-actions {
+  margin-top: var(--spacing-5);
+}
+
+.amount-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.currency-symbol {
+  position: absolute;
+  left: var(--spacing-3);
+  color: var(--neutral-600);
+  font-weight: 500;
+}
+
+.amount-input input {
+  padding-left: var(--spacing-5);
+}
+
+/* Success message styles */
+.success-message {
+  text-align: center;
+  padding: var(--spacing-5) 0;
+}
+
+.success-icon {
+  background-color: var(--success-color);
+  color: white;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--spacing-4);
+  font-size: 2rem;
+}
+
+.transaction-id {
+  background-color: var(--neutral-100);
+  border-radius: var(--border-radius-sm);
+  padding: var(--spacing-3);
+  margin: var(--spacing-4) 0;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--neutral-700);
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .payment-card {
+    padding: var(--spacing-4);
+  }
+  
+  .expiry-cvv-row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-3);
+  }
+}
+
+/* Animation for card details section */
+.card-details {
+  transition: all 0.3s ease;
+}
+
+.card-details:focus-within {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Input focus effect */
+input:focus, select:focus {
+  outline: 2px solid var(--primary-light);
+  border-color: var(--primary-color);
+}

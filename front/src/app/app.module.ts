@@ -21,7 +21,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
-
+import { PaymentFormComponent } from './payment-form/payment-form.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +50,8 @@ import { UpdatePasswordComponent } from './auth/update-password/update-password.
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    FormsModule
+    FormsModule,
+    PaymentFormComponent
 
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],
