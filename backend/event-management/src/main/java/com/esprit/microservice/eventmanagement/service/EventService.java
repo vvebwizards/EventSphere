@@ -1,5 +1,6 @@
 package com.esprit.microservice.eventmanagement.service;
 
+import com.esprit.microservice.eventmanagement.Configuration.UserClient;
 import com.esprit.microservice.eventmanagement.entities.Event;
 import com.esprit.microservice.eventmanagement.repositories.EventRepository;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -14,14 +15,24 @@ import java.util.List;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.element.Paragraph;
-
-
+import com.esprit.microservice.eventmanagement.dto.UserDTO;
+import org.springframework.http.ResponseEntity;
 
 @Service
 @AllArgsConstructor
 public class EventService implements  IEventService{
     private EventRepository eventRepository;
-    public Event addEvent (Event e ) {return  eventRepository.save(e);   }
+    private final UserClient userClient;
+    public Event addEvent (Event e )
+    {    ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            throw new RuntimeException("Unauthorized: Cannot create event without user ID.");
+        }
+
+        e.setOwnerId(currentUser.getId());
+        return  eventRepository.save(e);   }
 
     @Override
     public List<Event> getall() {
@@ -60,6 +71,17 @@ public class EventService implements  IEventService{
         document.add(new Paragraph("Location: " + event.getLocation()));
 
         document.close();
+    }
+    @Override
+    public List<Event> getAllEventsByOwnerId() {
+        ResponseEntity<UserDTO> userResponse = userClient.getUserById();
+        UserDTO currentUser = userResponse.getBody();
+
+        if (currentUser == null || currentUser.getId() == null) {
+            throw new RuntimeException("Unauthorized: Cannot fetch resources without user ID.");
+        }
+
+        return eventRepository.findResourceByOwnerId(currentUser.getId());
     }
 
 }

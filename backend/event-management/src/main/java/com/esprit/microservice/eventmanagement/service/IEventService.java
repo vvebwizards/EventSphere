@@ -14,6 +14,6 @@ public interface IEventService {
     Event retrieveEvent(String id);
     void removeEvent(String id);
     void generatePdf(String id, HttpServletResponse response) throws IOException;
-
+    public List<Event> getAllEventsByOwnerId();
 
 }
