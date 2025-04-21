@@ -11,6 +11,7 @@ const UserSchema = new Schema({
     required: true, 
     enum: ['resource-owner', 'user', 'event-creator', 'partner'] 
   },
+
   joined_at: { type: Date, default: Date.now },
   updated_at: { type: Date }
 });

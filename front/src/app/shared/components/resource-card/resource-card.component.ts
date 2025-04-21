@@ -1,39 +1,52 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
+import { Resource, ResourceService } from '../../services/resource.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resource-card',
   standalone: false,
   templateUrl: './resource-card.component.html',
-  styleUrl: './resource-card.component.css'
+  styleUrls: ['./resource-card.component.css']
 })
 export class ResourceCardComponent {
-  @Input() resource: { imageUrl: string, name: string, type: string, description: string } = {
-    imageUrl: '',
-    name: '',
-    type: '',
-    description: ''
-  };
-  @Output() viewDetails = new EventEmitter<void>();
-  @Output() modify = new EventEmitter<void>();
-  @Output() delete = new EventEmitter<void>();
+  @Input() resource!: Resource;
+  @Output() viewDetails = new EventEmitter<Resource>();
+  @Output() modify = new EventEmitter<Resource>();
+  @Output() delete = new EventEmitter<string>();
+ 
+
+  constructor(
+    private resourceService: ResourceService,
+    private router: Router
+  ) {}
 
   getTruncatedDescription(): string {
-    const maxLength = 100;
-    if (this.resource.description.length > maxLength) {
-      return this.resource.description.slice(0, maxLength) + '...';
+    return this.resource.description?.length > 100
+      ? this.resource.description.slice(0, 100) + '...'
+      : this.resource.description;
+  }
+
+  onViewDetails(): void {
+    this.router.navigate(['/resourceDetails', this.resource.id]);
+  }
+
+  onModify(): void {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      this.resourceService.getResourceById(this.resource.id, token).subscribe({
+        next: (fullResource) => {
+          this.modify.emit(fullResource);
+        },
+        error: (err) => {
+          console.error('Error fetching resource for modify:', err);
+        }
+      });
+    } else {
+      console.error('No access token found');
     }
-    return this.resource.description;
   }
 
-  onViewDetails() {
-    this.viewDetails.emit();
-  }
+ 
 
-  onModify() {
-    this.modify.emit();
-  }
-
-  onDelete() {
-    this.delete.emit();
-  }
+  
 }

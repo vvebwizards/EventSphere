@@ -16,13 +16,33 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogin(): void {
+    console.log(this.email);
+    console.log(this.password);
     if (this.email && this.password) {
       this.authService.login(this.email, this.password).subscribe({
         next: (response) => {
           if (response.success) {
+        
             localStorage.setItem('accessToken', response.accessToken);
             localStorage.setItem('refreshToken', response.refreshToken);
-            this.router.navigate(['/profile']);
+            this.authService.setLoginStatus(true);
+
+            const token = response.accessToken;
+            this.authService.getCurrentUser(token).subscribe({
+              next: (userData) => {
+                const role = userData.role;
+
+               
+                if (role === 'user' || role === 'event-creator' || role === 'partner') {
+                  this.router.navigate(['/home']);
+                } else if (role === 'resource-owner') {
+                  this.router.navigate(['/resource-management']);
+                }
+              },
+              error: (err) => {
+                this.errorMessage = 'Failed to fetch user data';
+              },
+            });
           } else {
             this.errorMessage = response.message;
           }

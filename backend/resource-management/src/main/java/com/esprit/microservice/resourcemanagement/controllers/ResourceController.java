@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/resources")
 @AllArgsConstructor
@@ -54,7 +54,7 @@ public class ResourceController {
     }
 
     @GetMapping("/getOne/{id}")
-    @RolesAllowed("user")
+    @RolesAllowed("resource-owner")
     public ResponseEntity<Resource> getResourceById(@PathVariable UUID id) {
         return ResponseEntity.ok(resourceService.getResourceById(id));
     }

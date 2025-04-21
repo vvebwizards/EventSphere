@@ -7,7 +7,11 @@ import { ResourceManagementComponent } from './resource-management/resource-mana
 import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ResourceDetailsComponent } from './resource-details/resource-details.component';
+import { PaymentFormComponent } from './payment-form/payment-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -18,7 +22,12 @@ const routes: Routes = [
   { path: 'events', component: EventsComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
   { path: 'reclamations', component: ReclamationsComponent },
-  { path: 'profile', component: UserProfileComponent }
+  {path:'resourceDetails/:id',component:ResourceDetailsComponent},
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'update-password', component: UpdatePasswordComponent },
+  { path: 'profile', component: UserProfileComponent },
+  {path: 'payments', component: PaymentFormComponent}
+
 ];
 
 @NgModule({

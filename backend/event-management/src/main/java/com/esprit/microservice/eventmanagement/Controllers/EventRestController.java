@@ -1,5 +1,20 @@
 package com.esprit.microservice.eventmanagement.Controllers;
 
+import jakarta.annotation.security.RolesAllowed;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
@@ -29,13 +44,12 @@ import java.util.List;
 public class EventRestController {
 
     IEventService eventService;
-
     @PostMapping("/add-Event")
     @Operation(summary = "Add new event", description = "Create and save a new event")
     public Event addEvent(@RequestBody Event e) {
         return eventService.addEvent(e);
     }
-
+    @RolesAllowed("user")
     @GetMapping("/get-all-Events")
     @Operation(summary = "Get all events", description = "Retrieve the list of all events")
     public List<Event> getEvents() {

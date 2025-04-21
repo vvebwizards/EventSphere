@@ -1,6 +1,7 @@
 const { initializeAdminClient } = require('../config/keycloak-admin');
 const User = require('../models/User');
 const axios = require('axios');
+
 require('dotenv').config();
 const signUp = async (req, res) => {
   try {
@@ -111,4 +112,53 @@ const signIn = async (req, res) => {
 };
 
 
-module.exports = { signUp ,signIn};
+const updatePassword = async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    const params = new URLSearchParams();
+    params.append('key', token);
+    params.append('password-new', newPassword);
+
+    await axios.post(
+      `${process.env.KEYCLOAK_URL}/realms/${process.env.KEYCLOAK_REALM_NAME}/login-actions/action-token`,
+      params,
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    );
+
+    res.json({ success: true, message: 'Mot de passe mis à jour' });
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    res.status(500).json({ success: false, message: "Échec de mise à jour." });
+  }
+};
+
+
+const resetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const keycloakAdminClient = await initializeAdminClient();
+    const users = await keycloakAdminClient.users.find({ email });
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ success: false, message: "Utilisateur introuvable" });
+    }
+
+    const userId = users[0].id;
+
+    await keycloakAdminClient.users.executeActionsEmail({
+      id: userId,
+      actions: ['UPDATE_PASSWORD'],
+    });
+
+    res.json({ success: true, message: "Un e-mail de réinitialisation de mot de passe a été envoyé." });
+  } catch (err) {
+    console.error("Reset Password Error:", err);
+    res.status(500).json({ success: false, message: "Erreur lors de la réinitialisation du mot de passe." });
+  }
+};
+
+
+module.exports = { signUp ,signIn,resetPassword,updatePassword};
