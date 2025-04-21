@@ -17,7 +17,7 @@ public class GatewayConfig {
                 .route("event", r -> r.path("/event/**")
                         .uri("lb://event-management")) // Update to use Eureka service ID
                 // Route for Partnership microservice
-                .route("partnership", r -> r.path("/partnership/**")
+                .route("partnership-management", r -> r.path("/partnership/**")
                         .uri("lb://partnership-management")) // Update if applicable
                 // Route for Resource microservice
                 .route("resource-management", r -> r.path("/resource-api/**")

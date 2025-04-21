@@ -1,3 +1,4 @@
+/*
 package com.esprit.microservice.eventmanagement;
 import jakarta.ws.rs.HttpMethod;
 import org.springframework.context.annotation.Bean;
@@ -43,3 +44,4 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 }
+*/

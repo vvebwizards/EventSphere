@@ -2,12 +2,26 @@ package com.esprit.microservice.partnershipmanagement.controller;
 
 import com.esprit.microservice.partnershipmanagement.entity.Partner;
 import com.esprit.microservice.partnershipmanagement.service.PartnerService;
+import jakarta.annotation.security.RolesAllowed;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/partners")
@@ -32,7 +46,7 @@ public class PartnerController {
                 .map(partner -> new ResponseEntity<>(partner, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
+    @RolesAllowed("user")
     @GetMapping
     public ResponseEntity<List<Partner>> getAllPartners() {
         List<Partner> partners = partnerService.getAllPartners();
