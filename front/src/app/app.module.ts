@@ -19,6 +19,9 @@ import { AddResourceModalComponent } from './add-resource-modal/add-resource-mod
 import { ResourceCardComponent } from './shared/components/resource-card/resource-card.component';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ResourceDetailsComponent } from './resource-details/resource-details.component';
+import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
+import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
+
 
 @NgModule({
   declarations: [
@@ -33,14 +36,20 @@ import { ResourceDetailsComponent } from './resource-details/resource-details.co
     EventsComponent,
     MyBookingsComponent,
     ReclamationsComponent,
+
     UserProfileComponent,
     AddResourceModalComponent,
-    ResourceDetailsComponent
+    ResourceDetailsComponent,
+    ResetPasswordComponent,
+    UpdatePasswordComponent,
+  
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     FormsModule
 
   ],
