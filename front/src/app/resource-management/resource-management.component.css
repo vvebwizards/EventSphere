@@ -94,3 +94,31 @@ h2 {
   border-radius: 4px;
   cursor: pointer;
 }
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  text-align: center;
+}
+
+.empty-content {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.empty-icon {
+  font-size: 72px;
+  color: #757575;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin-bottom: 8px;
+  color: #424242;
+}
+
+.empty-state p {
+  color: #757575;
+  margin-bottom: 24px;
+}

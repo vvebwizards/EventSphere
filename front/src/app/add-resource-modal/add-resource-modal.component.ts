@@ -11,8 +11,9 @@ export class AddResourceModalComponent implements OnInit {
   @Input() resource: Resource | null = null;
   @Input() isEditMode: boolean = false;
   @Output() close = new EventEmitter<void>();
-  @Output() save = new EventEmitter<Resource>();
-
+  @Output() save = new EventEmitter<{resource: Resource, file: File | null}>();
+  
+  selectedFile: File | null = null;
   newResource: Resource = {
     id: '',
     name: '',
@@ -21,9 +22,10 @@ export class AddResourceModalComponent implements OnInit {
     available: true,
     costPerHour: 0,
     location: '',
-    lastBookedDate: '',
+ 
     dynamicPricePerHour: 0,
-    ownerId: ''
+    ownerId: '',
+    imagePath: null
   };
 
   ngOnInit(): void {
@@ -38,8 +40,18 @@ export class AddResourceModalComponent implements OnInit {
   }
 
   onSave(): void {
-    this.save.emit(this.newResource);
+    this.save.emit({
+      resource: this.newResource,
+      file: this.selectedFile
+    });
     this.resetForm();
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
   }
 
   private resetForm(): void {
@@ -51,9 +63,11 @@ export class AddResourceModalComponent implements OnInit {
       available: true,
       costPerHour: 0,
       location: '',
-      lastBookedDate: '',
+ 
       dynamicPricePerHour: 0,
-      ownerId: ''
+      ownerId: '',
+      imagePath: null
     };
+    this.selectedFile = null;
   }
 }

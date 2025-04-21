@@ -12,7 +12,9 @@ import { UpdatePasswordComponent } from './auth/update-password/update-password.
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 import { PaymentFormComponent } from './payment-form/payment-form.component';
-
+import { PartnerListComponent } from './components/partner-list/partner-list.component';
+import { PartnerFormComponent } from './components/partner-form/partner-form.component';
+import { PartnerStatsComponent } from './components/partner-stats/partner-stats.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
@@ -26,7 +28,11 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'update-password', component: UpdatePasswordComponent },
   { path: 'profile', component: UserProfileComponent },
-  {path: 'payments', component: PaymentFormComponent}
+  {path: 'payments', component: PaymentFormComponent},
+  { path: 'partners',             component: PartnerListComponent },
+  { path: 'partners/new',         component: PartnerFormComponent },
+  { path: 'partners/:id',         component: PartnerFormComponent },
+  { path: 'partners/stats',       component: PartnerStatsComponent }
 
 ];
 

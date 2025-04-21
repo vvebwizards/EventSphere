@@ -1,7 +1,5 @@
 <div class="resource-card">
-  <img src="https://media-api.xogrp.com/images/a5ab8a8f-071d-49b8-a9d0-46e22c1a9ab3~rs_768.h"
-       alt="{{ resource.name }}"
-       class="resource-image">
+  <img [src]="getImageUrl()" alt="{{ resource.name }}" class="resource-image">
   
   <div class="resource-content">
     <h3>{{ resource.name }}</h3>

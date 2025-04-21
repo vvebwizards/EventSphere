@@ -1,5 +1,6 @@
 package com.esprit.microservice.resourcemanagement.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +23,8 @@ public class Resource {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", updatable = false, nullable = false, columnDefinition = "UUID")
     private UUID id;
+    @Column(nullable = true)
+    private String imagePath;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -40,6 +43,7 @@ public class Resource {
     private String location;
 
     @Column(nullable = true)
+    @JsonIgnore
     private LocalDateTime lastBookedDate;
 
     private Double dynamicPricePerHour ;

@@ -27,6 +27,8 @@ public class Event implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String location;
+    @Column(nullable = false)
+    private String ownerId;
 
 
 }

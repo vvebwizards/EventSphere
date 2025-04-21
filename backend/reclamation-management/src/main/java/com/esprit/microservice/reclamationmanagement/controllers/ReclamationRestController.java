@@ -21,6 +21,7 @@ import java.util.List;
 public class ReclamationRestController {
     IReclamationService reclamationService;
 
+    @RolesAllowed("user")
     @PostMapping("/add-reclamation")
     @Operation(summary = "Add a new reclamation", description = "Creates a new reclamation and returns the created entity.")
     @ApiResponses(value = {
@@ -43,6 +44,7 @@ public class ReclamationRestController {
         return reclamationService.getReclamations();
     }
 
+    @RolesAllowed("user")
     @PutMapping("/update-reclamation")
     @Operation(summary = "Update an existing reclamation", description = "Updates the details of an existing reclamation and returns the updated entity.")
     @ApiResponses(value = {
@@ -54,6 +56,7 @@ public class ReclamationRestController {
         return reclamationService.updateReclamation(r);
     }
 
+    @RolesAllowed("user")
     @DeleteMapping("/remove-reclamation/{reclamation-id}")
     @Operation(summary = "Delete a reclamation", description = "Deletes a reclamation by its ID.")
     @ApiResponses(value = {
@@ -67,6 +70,7 @@ public class ReclamationRestController {
         reclamationService.removeReclamation(idReclamation);
     }
 
+    @RolesAllowed("user")
     @GetMapping("/get-reclamation/{reclamation-id}")
     @Operation(summary = "Retrieve a reclamation by ID", description = "Returns a reclamation by its ID.")
     @ApiResponses(value = {

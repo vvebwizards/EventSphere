@@ -6,8 +6,9 @@ import { Payment, CreditCardInfo } from '../shared/models/payment.model';
 import { ProgressBarComponent } from '../ui/progress-bar/progress-bar.component';
 import { ButtonComponent } from '../ui/button/button.component';
 import { FormFieldComponent } from '../ui/form-field/form-field.component';
-import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
+
 import { ChangeDetectorRef } from '@angular/core'
+import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-payment-form',
@@ -18,7 +19,7 @@ import { ChangeDetectorRef } from '@angular/core'
     ProgressBarComponent,
     ButtonComponent,
     FormFieldComponent,
-    LoadingSpinnerComponent
+    
   ],
   templateUrl: './payment-form.component.html',
   styleUrls: ['./payment-form.component.css']
