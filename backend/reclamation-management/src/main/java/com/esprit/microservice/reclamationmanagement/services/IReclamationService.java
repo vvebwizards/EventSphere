@@ -10,4 +10,5 @@ public interface IReclamationService {
     Reclamation updateReclamation(Reclamation r);
     void removeReclamation(Long idReclamation);
     Reclamation retrieveReclamation(Long idReclamation);
+    List<Reclamation> getAllReclamationsByOwnerId();
 }
