@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { Resource, ResourceService } from '../../services/resource.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resource-card',
@@ -16,7 +17,7 @@ export class ResourceCardComponent {
 
   constructor(
     private resourceService: ResourceService,
-    private cdr: ChangeDetectorRef
+    private router: Router
   ) {}
 
   getTruncatedDescription(): string {
@@ -26,19 +27,7 @@ export class ResourceCardComponent {
   }
 
   onViewDetails(): void {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      this.resourceService.getResourceById(this.resource.id, token).subscribe({
-        next: (fullResource) => {
-          this.viewDetails.emit(fullResource);
-        },
-        error: (err) => {
-          console.error('Error fetching resource details:', err);
-        }
-      });
-    } else {
-      console.error('No access token found');
-    }
+    this.router.navigate(['/resourceDetails', this.resource.id]);
   }
 
   onModify(): void {

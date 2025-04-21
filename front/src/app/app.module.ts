@@ -18,6 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { AddResourceModalComponent } from './add-resource-modal/add-resource-modal.component';
 import { ResourceCardComponent } from './shared/components/resource-card/resource-card.component';
 import { HeaderComponent } from './shared/components/header/header.component';
+import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { HeaderComponent } from './shared/components/header/header.component';
     MyBookingsComponent,
     ReclamationsComponent,
     UserProfileComponent,
-    AddResourceModalComponent
+    AddResourceModalComponent,
+    ResourceDetailsComponent
   ],
   imports: [
     BrowserModule,

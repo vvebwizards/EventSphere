@@ -8,6 +8,7 @@ import { EventsComponent } from './events/events.component';
 import { MyBookingsComponent } from './my-bookings/my-bookings.component';
 import { ReclamationsComponent } from './reclamations/reclamations.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ResourceDetailsComponent } from './resource-details/resource-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'events', component: EventsComponent },
   { path: 'my-bookings', component: MyBookingsComponent },
   { path: 'reclamations', component: ReclamationsComponent },
-  { path: 'profile', component: UserProfileComponent }
+  { path: 'profile', component: UserProfileComponent },
+  {path:'resourceDetails/:id',component:ResourceDetailsComponent}
 ];
 
 @NgModule({
