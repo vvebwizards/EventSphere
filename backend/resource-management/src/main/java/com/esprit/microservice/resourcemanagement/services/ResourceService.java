@@ -103,7 +103,8 @@ public class ResourceService implements IResourceService {
 
     //only the resource owner can update the resource
     @Override
-    public Resource updateResource(UUID id, Resource resourceDetails) {
+    @Transactional
+    public Resource updateResource(UUID id, Resource resourceDetails, MultipartFile imageFile) {
         ResponseEntity<UserDTO> userResponse = userClient.getUserById();
         UserDTO currentUser = userResponse.getBody();
 
@@ -116,15 +117,43 @@ public class ResourceService implements IResourceService {
             throw new EntityNotFoundException("Resource not found for this user");
         }
 
+        // Update basic fields
         resource.setName(resourceDetails.getName());
         resource.setType(resourceDetails.getType());
         resource.setDescription(resourceDetails.getDescription());
         resource.setAvailable(resourceDetails.isAvailable());
         resource.setCostPerHour(resourceDetails.getCostPerHour());
-        resource.setLocation(resourceDetails.getLocation()); // Fixed
+        resource.setLocation(resourceDetails.getLocation());
         resource.setLastBookedDate(resourceDetails.getLastBookedDate());
 
+        // Handle image update (same as createResource)
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // Delete old image if it exists
+                if (resource.getImagePath() != null) {
+                    deleteOldImage(resource.getImagePath());
+                }
+
+                // Save new image
+                String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+                FileUploadUtil.saveFile(fileName, imageFile.getBytes());
+                resource.setImagePath("http://localhost:8087/resource-api/resources/images/" + fileName);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload image", e);
+        }
+
         return resourceRepository.save(resource);
+    }
+
+    private void deleteOldImage(String imagePath) {
+        try {
+            String filename = imagePath.substring(imagePath.lastIndexOf('/') + 1);
+            Path filePath = Paths.get("src/main/resources/static/uploads", filename);
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            System.err.println("Failed to delete old image: " + e.getMessage());
+        }
     }
 
     //only the owner can delete the resource

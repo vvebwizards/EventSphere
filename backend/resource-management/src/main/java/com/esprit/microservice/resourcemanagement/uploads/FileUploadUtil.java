@@ -21,4 +21,5 @@ public class FileUploadUtil {
         // Return the relative path to the file from the static folder
         return "/uploads/" + fileName;
     }
+
 }

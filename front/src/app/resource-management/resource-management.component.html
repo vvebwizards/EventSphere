@@ -11,7 +11,17 @@
       <button class="add-button" (click)="onAddNewResource()">Add New Resource</button>
     </div>
   </div>
-  <div class="resource-grid">
+
+  <div *ngIf="filteredResources.length === 0" class="empty-state">
+    <div class="empty-content">
+      <i class="fas fa-box-open empty-icon"></i>
+      <h3>No resources added yet</h3>
+      <p>Get started by adding your first resource</p>
+    
+    </div>
+  </div>
+  
+  <div class="resource-grid" *ngIf="filteredResources.length > 0">
     <app-resource-card
       *ngFor="let resource of filteredResources"
       [resource]="resource"
@@ -28,4 +38,3 @@
   (close)="closeAddModal()"
   (save)="handleSave($event)">
 </app-add-resource-modal>
-

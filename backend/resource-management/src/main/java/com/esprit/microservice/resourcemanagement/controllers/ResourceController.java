@@ -90,8 +90,28 @@ public class ResourceController {
 
     @PutMapping("/updateOne/{id}")
     @RolesAllowed("resource-owner")
-    public ResponseEntity<Resource> updateResource(@PathVariable UUID id, @RequestBody Resource resource) {
-        return ResponseEntity.ok(resourceService.updateResource(id, resource));
+    public ResponseEntity<Resource> updateResource(
+            @PathVariable UUID id,
+            @RequestPart("resource") String resourceJson,
+            @RequestPart(value = "image", required = false) MultipartFile imageFile) {
+
+        try {
+            System.out.println("Received update JSON: " + resourceJson);
+            System.out.println("Image file: " + (imageFile != null ? imageFile.getOriginalFilename() : "No image uploaded"));
+
+            // Convert JSON string to Resource object
+            ObjectMapper objectMapper = new ObjectMapper();
+            Resource resource = objectMapper.readValue(resourceJson, Resource.class);
+
+            Resource updated = resourceService.updateResource(id, resource, imageFile);
+            return ResponseEntity.ok(updated);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("Delete/{id}")

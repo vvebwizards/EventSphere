@@ -14,7 +14,7 @@ public interface IResourceService {
     public List<Resource> getAllResources();
     public Resource getResourceById(UUID id);
     public Resource createResource(Resource resource, MultipartFile imageFile);
-    public Resource updateResource(UUID id, Resource resourceDetails);
+    public Resource updateResource(UUID id, Resource resourceDetails, MultipartFile imageFile);
     public void deleteResource(UUID id);
     public  List<ResourceUtilizationReport> getResourceUtilizationReport(LocalDateTime startDate, LocalDateTime endDate);
     public  List<BookingRevenueReport> getRessourceRevenueAndBookingPourcentage(LocalDateTime startDate, LocalDateTime endDate);

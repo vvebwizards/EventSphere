@@ -47,19 +47,19 @@ export class ResourceService {
   updateResource(id: string, resource: Resource, imageFile: File | null, token: string): Observable<Resource> {
     const formData = new FormData();
     formData.append('resource', new Blob([JSON.stringify(resource)], {
-      type: 'application/json'
+        type: 'application/json'
     }));
     
     if (imageFile) {
-      formData.append('image', imageFile);
+        formData.append('image', imageFile);
     }
 
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
     });
 
     return this.http.put<Resource>(`${this.baseUrl}/updateOne/${id}`, formData, { headers });
-  }
+}
   
   createResource(resource: Resource, imageFile: File | null, token: string): Observable<Resource> {
     if (!token) {
