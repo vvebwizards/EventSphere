@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.security.RolesAllowed;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ public class ReclamationRestController {
         return reclamationService.addReclamation(r);
     }
 
+    @RolesAllowed("user")
     @GetMapping("/get-all-reclamations")
     @Operation(summary = "Retrieve all reclamations", description = "Returns a list of all reclamations.")
     @ApiResponses(value = {

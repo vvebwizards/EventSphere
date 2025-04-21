@@ -4,58 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="46d317e4-0127-44c6-a25c-253d22b6316d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/OAuth/controllers/authController.js" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth/controllers/authController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OAuth/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OAuth/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/OAuth/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/OAuth/routes/authRoutes.js" afterDir="false" />
+    <list default="true" id="fdb38a9c-c6a1-4743-96d9-04ce5208835e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/event-management/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/event-management/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
-  <component name="ProjectId" id="2w0MJ5gbYm2fUKKNhdHyVEII4uy" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/Nour/Desktop/micro service/EventSphere/backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+    "last_opened_file_path": "D:/Users/hafeu/Desktop/Hafedh/EventSphere/backend/partnership-management"
   }
 }]]></component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="46d317e4-0127-44c6-a25c-253d22b6316d" name="Changes" comment="" />
-      <created>1745173962597</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1745173962597</updated>
-      <workItem from="1745173963758" duration="1722000" />
-    </task>
-    <servers />
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="backend" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="backend" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+  <component name="TaskManager">
+    <servers />
   </component>
 </project>
