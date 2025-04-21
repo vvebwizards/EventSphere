@@ -35,8 +35,7 @@ twilio.accountSid=AC461663a91375f6c85c430d8df5fbc526
 twilio.authToken=202528686fbbcbcdae8c43ad1f3319e0
 twilio.phoneNumber=+18484209053
 default.partner.phone=+21624059273
-# ? where your NodeJS user?service is running in DEV:
-user-service.base-url=http://localhost:3000
+
 
 
 
