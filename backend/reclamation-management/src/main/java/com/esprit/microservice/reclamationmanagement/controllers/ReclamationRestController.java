@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/reclamation")
 @Tag(name = "Reclamation Management", description = "APIs for managing reclamations")
 public class ReclamationRestController {

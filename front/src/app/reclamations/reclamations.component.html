@@ -1,1 +1,35 @@
-<p>reclamations works!</p>
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold mb-4">My Reclamations</h2>
+  
+    <!-- Error message display -->
+    <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+      {{ errorMessage }}
+    </div>
+  
+    <!-- Reclamations table -->
+    <table *ngIf="reclamations.length > 0" class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="py-2 px-4 border-b text-left">ID</th>
+          <th class="py-2 px-4 border-b text-left">Title</th>
+          <th class="py-2 px-4 border-b text-left">Description</th>
+          <th class="py-2 px-4 border-b text-left">Date</th>
+          <th class="py-2 px-4 border-b text-left">Owner ID</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reclamation of reclamations" class="hover:bg-gray-50">
+          <td class="py-2 px-4 border-b">{{ reclamation.idRec }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.title }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.description }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.date }}</td>
+          <td class="py-2 px-4 border-b">{{ reclamation.ownerId }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- No reclamations message -->
+    <div *ngIf="reclamations.length === 0 && !errorMessage" class="text-center text-gray-500 mt-4">
+      No reclamations found.
+    </div>
+  </div>

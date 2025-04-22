@@ -11,7 +11,7 @@ public class GatewayConfig {
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
                 // Route for Reclamation microservice
-                .route("reclamation", r -> r.path("/reclamation/**")
+                .route("reclamation", r -> r.path("/reclamation-api/**")
                         .uri("lb://reclamation-management")) // Use Eureka service ID
                 // Route for Event microservice
                 .route("event", r -> r.path("/event/**")
