@@ -22,7 +22,10 @@ import { ResourceDetailsComponent } from './resource-details/resource-details.co
 import { ResetPasswordComponent } from './auth/reset-password/reset-password.component';
 import { UpdatePasswordComponent } from './auth/update-password/update-password.component';
 import { PaymentFormComponent } from './payment-form/payment-form.component';
-
+import { PartnerListComponent } from './components/partner-list/partner-list.component';
+import { PartnerFormComponent } from './components/partner-form/partner-form.component';
+import { PartnerStatsComponent } from './components/partner-stats/partner-stats.component';
+  
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +44,8 @@ import { PaymentFormComponent } from './payment-form/payment-form.component';
     AddResourceModalComponent,
     ResourceDetailsComponent,
     ResetPasswordComponent,
-    UpdatePasswordComponent,
+    UpdatePasswordComponent
+
   
 
   ],
@@ -51,7 +55,10 @@ import { PaymentFormComponent } from './payment-form/payment-form.component';
     ReactiveFormsModule,
     FormsModule,
     FormsModule,
-    PaymentFormComponent
+    PaymentFormComponent,
+    PartnerListComponent,
+    PartnerFormComponent,
+    PartnerStatsComponent
 
   ],
   providers: [provideHttpClient(withInterceptorsFromDi())],

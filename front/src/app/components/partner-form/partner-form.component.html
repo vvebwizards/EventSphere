@@ -1,0 +1,84 @@
+<!-- src/app/components/partner-form/partner-form.component.html -->
+<div class="partner-form-wrapper"
+     style="max-width:500px;margin:2rem auto;padding:1.5rem;
+            box-shadow:0 2px 8px rgba(0,0,0,0.1);border-radius:8px;
+            font-family:Segoe UI,Arial,sans-serif;background:#fff;">
+
+  <h2 style="text-align:center;color:#333;margin-bottom:1rem">
+    {{ partner.id ? 'Edit Partner' : 'New Partner' }}
+  </h2>
+
+  <form (ngSubmit)="save()" novalidate style="display:flex;flex-direction:column;gap:0.75rem;">
+
+    <label style="font-weight:600;color:#555;">
+      Name:
+      <input [(ngModel)]="partner.name" name="name" required
+             placeholder="Enter name"
+             style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px"/>
+    </label>
+
+    <label style="font-weight:600;color:#555;">
+      Email:
+      <input [(ngModel)]="partner.email" name="email" required type="email"
+             placeholder="Enter email"
+             style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px"/>
+    </label>
+
+    <label style="font-weight:600;color:#555;">
+      Phone:
+      <input [(ngModel)]="partner.phoneNumber" name="phone"
+             placeholder="e.g. +1 555 1234"
+             style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px"/>
+    </label>
+
+    <label style="font-weight:600;color:#555;">
+      Address:
+      <input [(ngModel)]="partner.address" name="address"
+             placeholder="Street, City, ZIP"
+             style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px"/>
+    </label>
+
+    <label style="font-weight:600;color:#555;">
+      Website:
+      <input [(ngModel)]="partner.website" name="website" type="url"
+             placeholder="https://example.com"
+             style="width:100%;padding:0.5rem;border:1px solid #ccc;border-radius:4px"/>
+    </label>
+
+    <label style="font-weight:600;color:#555;display:flex;align-items:center;gap:0.5rem;">
+      Status:
+      <select [(ngModel)]="partner.status" name="status"
+              style="flex:1;padding:0.5rem;border:1px solid #ccc;border-radius:4px">
+        <option>ACTIVE</option>
+        <option>INACTIVE</option>
+      </select>
+    </label>
+
+    <div style="display:flex;justify-content:space-between;margin-top:1.5rem">
+      <button type="submit"
+              style="flex:1;margin-right:0.5rem;
+                     background:#4CAF50;color:#fff;border:none;
+                     padding:0.6rem 1rem;border-radius:4px;
+                     font-size:1rem;cursor:pointer"
+              [disabled]="!partner.name || !partner.email">
+        {{ partner.id ? 'Update' : 'Create' }}
+      </button>
+      <button type="button" routerLink="/partners"
+              style="flex:1;margin-left:0.5rem;
+                     background:#f44336;color:#fff;border:none;
+                     padding:0.6rem 1rem;border-radius:4px;
+                     font-size:1rem;cursor:pointer">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+
+  <style>
+    /* Mobile adjustments */
+    @media (max-width: 480px) {
+      .partner-form-wrapper { margin: 1rem; padding: 1rem; }
+      form { gap: 0.5rem; }
+    }
+  </style>
+</div>

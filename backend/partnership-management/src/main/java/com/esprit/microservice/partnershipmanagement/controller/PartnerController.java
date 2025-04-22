@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/partners")
@@ -46,7 +45,7 @@ public class PartnerController {
                 .map(partner -> new ResponseEntity<>(partner, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    @RolesAllowed("user")
+
     @GetMapping
     public ResponseEntity<List<Partner>> getAllPartners() {
         List<Partner> partners = partnerService.getAllPartners();

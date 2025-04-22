@@ -40,7 +40,8 @@ public class KeycloakSecurityConfig {
                                 "/webjars/**",
                                 "/configuration/**",
                                 "/swagger-ui.html",
-                                "/actuator/**"
+                                "/actuator/**",
+                                "/api/partners/**"
 
                         ).permitAll()
                         .anyRequest().hasAnyRole("user", "resource-owner", "event-creator", "partner")

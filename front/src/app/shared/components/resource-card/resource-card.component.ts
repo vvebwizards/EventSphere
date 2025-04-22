@@ -19,7 +19,9 @@ export class ResourceCardComponent {
     private resourceService: ResourceService,
     private router: Router
   ) {}
-
+  getImageUrl(): string {
+    return this.resource.imagePath; 
+  }
   getTruncatedDescription(): string {
     return this.resource.description?.length > 100
       ? this.resource.description.slice(0, 100) + '...'
@@ -45,8 +47,4 @@ export class ResourceCardComponent {
       console.error('No access token found');
     }
   }
-
- 
-
-  
 }

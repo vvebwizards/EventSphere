@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 export interface Resource {
+  imagePath: any;
   id: string;
   name: string;
   type: string;
@@ -10,9 +11,9 @@ export interface Resource {
   available: boolean;
   costPerHour: number;
   location: string;
-  lastBookedDate: string;
   dynamicPricePerHour: number;
   ownerId: string;
+  
 }
 
 @Injectable({
@@ -43,23 +44,43 @@ export class ResourceService {
     return this.http.get<Resource>(`${this.baseUrl}/getOne/${id}`,{ headers });
   }
 
-  updateResource(id: string, resource: Resource, token: string): Observable<Resource> {
+  updateResource(id: string, resource: Resource, imageFile: File | null, token: string): Observable<Resource> {
+    const formData = new FormData();
+    formData.append('resource', new Blob([JSON.stringify(resource)], {
+        type: 'application/json'
+    }));
+    
+    if (imageFile) {
+        formData.append('image', imageFile);
+    }
+
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+        'Authorization': `Bearer ${token}`
     });
-    return this.http.put<Resource>(`${this.baseUrl}/updateOne/${id}`, resource, { headers });
-  }
+
+    return this.http.put<Resource>(`${this.baseUrl}/updateOne/${id}`, formData, { headers });
+}
   
-  createResource(resource: Resource, token: string): Observable<Resource> {
+  createResource(resource: Resource, imageFile: File | null, token: string): Observable<Resource> {
     if (!token) {
       throw new Error('Token is required for authentication');
     }
+
+    const formData = new FormData();
+    formData.append('resource', new Blob([JSON.stringify(resource)], {
+      type: 'application/json'
+    }));
+    
+    if (imageFile) {
+      formData.append('image', imageFile);
+    }
+
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Authorization': `Bearer ${token}`
     });
-    return this.http.post<Resource>(`${this.baseUrl}/addOne`, resource, { headers });
+
+    return this.http.post<Resource>(`${this.baseUrl}/addOne`, formData, { headers });
   }
+
   
 }
